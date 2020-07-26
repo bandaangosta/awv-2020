@@ -16,7 +16,9 @@ class CameraImpl: public virtual CharacteristicComponentImpl,
 	public:
 	CameraImpl(const ACE_CString& name, maci::ContainerServices* containerServices);
 	virtual ~CameraImpl();
-	virtual ::TYPES::ImageType * takeImage (const char * exposureTime, const char * iso);
+	virtual ::TYPES::ImageType * getFrame (const char * exposureTime, const char * iso);
+	virtual void on();
+	virtual void off();
 	virtual ACS::RWstring_ptr shutterSpeed() throw(CORBA::SystemException);
 	virtual ACS::RWstring_ptr isoSpeed() throw(CORBA::SystemException);
 

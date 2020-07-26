@@ -31,7 +31,7 @@ module TELESCOPE_MODULE {
        * @param azimut          desired telescope's azimut   (degrees)
        */
        void setTo (in double altitude, in double azimuth);
-
+       void objfix (in double altitude, in double azimuth);
 
       /**
        * Asynchronously moves away the telescope, starting from actual position.

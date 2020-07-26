@@ -41,7 +41,15 @@ void CameraImpl::aboutToAbort(void)
 {
 }
 
-TYPES::ImageType * CameraImpl::takeImage (const char * exposureTime, const char * iso)
+void CameraImpl::on()
+{
+}
+
+void CameraImpl::off()
+{
+}
+
+TYPES::ImageType * CameraImpl::getFrame (const char * exposureTime, const char * iso)
 {
 	::Camera *camera;
 	::GPContext *context;

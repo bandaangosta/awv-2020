@@ -89,6 +89,8 @@ class MOUNT2Impl : public virtual CharacteristicComponentImpl,
 
 /* --------------------- [ CORBA START interface ] ----------------*/
 
+	virtual void objfix(CORBA::Double altitude, CORBA::Double azimuth) throw(CORBA::SystemException);
+	
 	virtual void setTo(CORBA::Double altitude, CORBA::Double azimuth) throw(CORBA::SystemException);
 
 	virtual void offSet(CORBA::Double altOffset, CORBA::Double azOffset) throw(CORBA::SystemException);

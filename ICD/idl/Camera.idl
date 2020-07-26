@@ -29,9 +29,16 @@ module CAMERA_MODULE
 {
 	interface Camera : ACS::CharacteristicComponent
 	{
-
-		TYPES::ImageType takeImage(in string exposureTime, in string iso);
 		
+		/**
+		* This method take the image from the real camera.
+		* The exposure time is a value based on the camera hardware
+		* The iso too
+		*/
+		TYPES::ImageType getFrame(in string exposureTime, in string iso);
+		
+		void on();
+		void off();
                 
                 readonly attribute ACS::RWstring isoSpeed;   
                 readonly attribute ACS::RWstring shutterSpeed;   

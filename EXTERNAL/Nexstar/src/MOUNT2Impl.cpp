@@ -145,6 +145,12 @@ void MOUNT2Impl::aboutToAbort(void)
 
 
 /* ------------------ [ Functions ] ----------------- */
+void MOUNT2Impl::objfix(CORBA::Double altitude, CORBA::Double azimuth)
+  throw(CORBA::SystemException)
+{
+	setTo(altitude, azimuth);
+}
+
 void MOUNT2Impl::setTo(CORBA::Double altitude, CORBA::Double azimuth)
   throw(CORBA::SystemException)
 {
