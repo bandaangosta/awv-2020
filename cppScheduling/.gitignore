@@ -1,0 +1,6 @@
+*.o
+*.jar
+*.pyc
+do_not_commit*
+lib
+object
