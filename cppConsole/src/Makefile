@@ -38,6 +38,7 @@
 #    None
 #------------------------------------------------------------------------
 
+
 #
 # user definable C-compilation flags
 #USER_CFLAGS = 
@@ -61,28 +62,40 @@ EXECUTABLES_L   =
 
 #
 # <brief description of xxxxx program>
-xxxxx_OBJECTS   =	
+xxxxx_OBJECTS   = 	
 xxxxx_LDFLAGS   =
-xxxxx_LIBS      =
+xxxxx_LIBS      = 
 
 #
 # special compilation flags for single c sources
 #yyyyy_CFLAGS   = 
 
+# The Helloworld IDL example was:
+# IDL_FILES = HelloComponent
+# HelloComponentStubs_LIBS = acscomponentStubs
+
+# The Helloworld example was:
+#INCLUDES        = HelloComponentImpl.h
+#LIBRARIES = HelloComponentImpl
+#HelloComponentImpl_OBJECTS = HelloComponentImpl
+#HelloComponentImpl_LIBS = HelloComponentStubs acscomponent
+#LIBRARIES_L     =
+
 #
 # Includes (.h) files (public only)
 # ---------------------------------
-INCLUDES        =
+INCLUDES        = ConsoleImpl.h
 
 #
 # Libraries (public and local)
 # ----------------------------
-LIBRARIES       =
-LIBRARIES_L     =
+LIBRARIES       = ConsoleImpl
+LIBRARIES_L     = 
 
 #
 # <brief description of lllll library>
-lllll_OBJECTS   =
+ConsoleImpl_OBJECTS = ConsoleImpl
+ConsoleImpl_LIBS = ConsoleStubs acscomponent SYSTEMErr TypesStubs
 
 #
 # Scripts (public and local)
@@ -133,7 +146,10 @@ CDB_SCHEMAS =
 # 
 # IDL Files and flags
 # 
-IDL_FILES =
+IDL_FILES = 
+ConsoleStubs_LIBS = 
+
+
 TAO_IDLFLAGS =
 USER_IDL =
 #
@@ -154,7 +170,7 @@ XML_IDL=
 #
 # Java Component Helper Classes generation on/off
 #
-COMPONENT_HELPERS=
+COMPONENT_HELPERS=on
 #
 # Java Entity Classes generation on/off
 #

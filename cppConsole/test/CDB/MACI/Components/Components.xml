@@ -23,6 +23,10 @@
                              Type="IDL:acsws/CAMERA_MODULE/Camera:1.0"
                              Container="pySimContainer" ImplLang="py" />
 
+      <e Name="CONSOLE"   Code="ConsoleImpl"
+                             Type="IDL:acsws/CONSOLE_MODULE/Console:1.0"
+                             Container="bilboContainer" ImplLang="cpp" />
+
       <e Name="SCHEDULER"   Code="Acssim.Servants.Simulator"
                              Type="IDL:acsws/SCHEDULER_MODULE/Scheduler:1.0"
                              Container="pySimContainer" ImplLang="py" />
