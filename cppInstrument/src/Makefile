@@ -65,7 +65,7 @@ LIBRARIES       := InstrumentModule
 LIBRARIES_L     =
 
 InstrumentModule_OBJECTS = InstrumentComponentImpl
-InstrumentModule_LIBS   = InstrumentStubs #etc.
+InstrumentModule_LIBS   = InstrumentStubs acscomponent #etc.
 
 #
 # <brief description of lllll library>
