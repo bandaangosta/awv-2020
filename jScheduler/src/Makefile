@@ -56,16 +56,13 @@ xxxxx_LIBS      =
 #
 # Includes (.h) files (public only)
 # ---------------------------------
-INCLUDES        = InstrumentComponentImpl.h
+INCLUDES        =
 
 #
 # Libraries (public and local)
 # ----------------------------
-LIBRARIES       := InstrumentModule
+LIBRARIES       =
 LIBRARIES_L     =
-
-InstrumentModule_OBJECTS = InstrumentComponentImpl
-InstrumentModule_LIBS   = InstrumentStubs acscomponent #etc.
 
 #
 # <brief description of lllll library>
@@ -115,29 +112,31 @@ tttlll_OBJECTS  =
 #
 # Configuration Database Files
 # ----------------------------
-CDB_SCHEMAS = 
+CDB_SCHEMAS = Scheduler
 
 #
 # Generate ACS Error System classes
 #
-#ACSERRDEF := SYSTEMErr
+ACSERRDEF := SYSTEMErr
 
 # 
 # IDL Files and flags
 # 
-IDL_FILES =
+IDL_FILES = Scheduler
 IDL_TAO_FLAGS = 
 USER_IDL =
+
+SchedulerStubs_LIBS = acscomponentStubs SYSTEMErrStubs
 
 #
 # Jarfiles and their directories
 #
-JARFILES= 
-jjj_DIRS=
+JARFILES=SchedulerImpl
+SchedulerImpl_DIRS=acsws 
 jjj_EXTRAS= 
 #
 # java sources in Jarfile on/off
-DEBUG=off
+DEBUG=on 
 #
 # ACS XmlIdl generation on/off
 #
@@ -145,7 +144,7 @@ XML_IDL=
 #
 # Java Component Helper Classes generation on/off
 #
-COMPONENT_HELPERS=off
+COMPONENT_HELPERS=on
 #
 # Java Entity Classes generation on/off
 #

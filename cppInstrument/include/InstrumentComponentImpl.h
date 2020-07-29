@@ -21,13 +21,11 @@
 //ClassName usually is <Interface> or <Interface>Impl, but can be anything
 class InstrumentComponentImpl: public virtual acscomponent::ACSComponentImpl, public POA_INSTRUMENT_MODULE::Instrument
 {
-  #warning TODO: Everything!
-  #warning AS: These might not be needed (they are passed to the constructor of acscomponent::ACSComponentImpl)
-  ACE_CString myName;
-  maci::ContainerServices *myContainer;
+  #warning TODO: CORBA calls instead of couts
+
   public:
     InstrumentComponentImpl(const ACE_CString& name, maci::ContainerServices * containerServices);
-
+    virtual ~InstrumentComponentImpl();
     virtual void cameraOn (void);
     virtual void cameraOff (void);
     virtual ::TYPES::ImageType * takeImage (::CORBA::Long exposureTime);

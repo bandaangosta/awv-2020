@@ -1,5 +1,20 @@
+
 #*******************************************************************************
-# ACS Community - https://github.com/ACS-Community/ACS-Workshop
+# PPPPPPPP
+#
+# "@(#) $Id$"
+#
+# Makefile of ........
+#
+# who       when      what
+# --------  --------  ----------------------------------------------
+# almamgr  27/07/20  created
+#
+
+# ALMA - Atacama Large Millimeter Array
+# Copyright (c) ESO - European Southern Observatory, 2014
+# (in the framework of the ALMA collaboration).
+# All rights reserved.
 # 
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -8,15 +23,16 @@
 # 
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # Lesser General Public License for more details.
 # 
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
-#
 #*******************************************************************************
-# This Makefile follows VLT Standards (see Makefile(5) for more).
+
+#*******************************************************************************
+# This Makefile follows ALMA/ACS Standards (see Makefile(5) for more).
 #*******************************************************************************
 # REMARKS
 #    None
@@ -56,20 +72,18 @@ xxxxx_LIBS      =
 #
 # Includes (.h) files (public only)
 # ---------------------------------
-INCLUDES        = InstrumentComponentImpl.h
+INCLUDES        = SchedulingImpl.h
 
 #
 # Libraries (public and local)
 # ----------------------------
-LIBRARIES       := InstrumentModule
+LIBRARIES       = cppSchedulingImpl
 LIBRARIES_L     =
-
-InstrumentModule_OBJECTS = InstrumentComponentImpl
-InstrumentModule_LIBS   = InstrumentStubs acscomponent #etc.
 
 #
 # <brief description of lllll library>
-lllll_OBJECTS   =
+cppSchedulingImpl_OBJECTS   = SchedulingImpl
+cppSchedulingImpl_LIBS      = SchedulingStubs
 
 #
 # Scripts (public and local)
@@ -117,27 +131,23 @@ tttlll_OBJECTS  =
 # ----------------------------
 CDB_SCHEMAS = 
 
-#
-# Generate ACS Error System classes
-#
-#ACSERRDEF := SYSTEMErr
-
 # 
 # IDL Files and flags
 # 
 IDL_FILES =
-IDL_TAO_FLAGS = 
+TAO_IDLFLAGS =
 USER_IDL =
-
 #
 # Jarfiles and their directories
 #
 JARFILES= 
 jjj_DIRS=
-jjj_EXTRAS= 
+jjj_EXTRAS=
+# For expressing dependencies between jarfiles (parallel builds)
+jjj_JLIBS= 
 #
 # java sources in Jarfile on/off
-DEBUG=off
+DEBUG= 
 #
 # ACS XmlIdl generation on/off
 #
@@ -145,7 +155,7 @@ XML_IDL=
 #
 # Java Component Helper Classes generation on/off
 #
-COMPONENT_HELPERS=off
+COMPONENT_HELPERS=
 #
 # Java Entity Classes generation on/off
 #

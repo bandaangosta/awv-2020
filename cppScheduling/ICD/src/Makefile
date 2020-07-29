@@ -56,16 +56,13 @@ xxxxx_LIBS      =
 #
 # Includes (.h) files (public only)
 # ---------------------------------
-INCLUDES        = InstrumentComponentImpl.h
+INCLUDES        =
 
 #
 # Libraries (public and local)
 # ----------------------------
-LIBRARIES       := InstrumentModule
+LIBRARIES       =
 LIBRARIES_L     =
-
-InstrumentModule_OBJECTS = InstrumentComponentImpl
-InstrumentModule_LIBS   = InstrumentStubs acscomponent #etc.
 
 #
 # <brief description of lllll library>
@@ -120,14 +117,24 @@ CDB_SCHEMAS =
 #
 # Generate ACS Error System classes
 #
-#ACSERRDEF := SYSTEMErr
+ACSERRDEF := SYSTEMErr
 
 # 
 # IDL Files and flags
 # 
-IDL_FILES =
+IDL_FILES = Types Console DataBase Instrument Scheduler Telescope TelescopeControl Camera Storage
 IDL_TAO_FLAGS = 
 USER_IDL =
+
+TypesStubs_LIBS = acscomponentStubs
+ConsoleStubs_LIBS = acscomponentStubs SYSTEMErrStubs TypesStubs
+DataBaseStubs_LIBS = acscomponentStubs SYSTEMErrStubs TypesStubs
+InstrumentStubs_LIBS = acscomponentStubs SYSTEMErrStubs TypesStubs
+SchedulerStubs_LIBS = acscomponentStubs SYSTEMErrStubs
+TelescopeStubs_LIBS = acscomponentStubs SYSTEMErrStubs TypesStubs
+TelescopeControlStubs_LIBS = baciStubs acscomponentStubs SYSTEMErrStubs TypesStubs
+CameraStubs_LIBS = baciStubs acscomponentStubs SYSTEMErrStubs TypesStubs
+StorageStubs_LIBS = acscomponent TypesStubs
 
 #
 # Jarfiles and their directories
@@ -137,7 +144,7 @@ jjj_DIRS=
 jjj_EXTRAS= 
 #
 # java sources in Jarfile on/off
-DEBUG=off
+DEBUG=on 
 #
 # ACS XmlIdl generation on/off
 #
@@ -145,7 +152,7 @@ XML_IDL=
 #
 # Java Component Helper Classes generation on/off
 #
-COMPONENT_HELPERS=off
+COMPONENT_HELPERS=on
 #
 # Java Entity Classes generation on/off
 #
