@@ -56,7 +56,7 @@ xxxxx_LIBS      =
 #
 # Includes (.h) files (public only)
 # ---------------------------------
-INCLUDES        =
+INCLUDES        = InstrumentComponentImpl.h
 
 #
 # Libraries (public and local)
@@ -65,7 +65,7 @@ LIBRARIES       := InstrumentModule
 LIBRARIES_L     =
 
 InstrumentModule_OBJECTS = InstrumentComponentImpl
-InstrumentModule_LIBS   = InstrumentStubs acscomponent ServiceErr InstrumentErr #etc.
+InstrumentModule_LIBS   = InstrumentStubs #etc.
 
 #
 # <brief description of lllll library>
@@ -125,19 +125,9 @@ CDB_SCHEMAS =
 # 
 # IDL Files and flags
 # 
-IDL_FILES = Types Console DataBase Instrument Scheduler Telescope TelescopeControl Camera Storage
+IDL_FILES =
 IDL_TAO_FLAGS = 
 USER_IDL =
-
-#TypesStubs_LIBS = acscomponentStubs
-#ConsoleStubs_LIBS = acscomponentStubs SYSTEMErrStubs TypesStubs
-#DataBaseStubs_LIBS = acscomponentStubs SYSTEMErrStubs TypesStubs
-#InstrumentStubs_LIBS = acscomponentStubs SYSTEMErrStubs TypesStubs
-#SchedulerStubs_LIBS = acscomponentStubs SYSTEMErrStubs
-#TelescopeStubs_LIBS = acscomponentStubs SYSTEMErrStubs TypesStubs
-#TelescopeControlStubs_LIBS = baciStubs acscomponentStubs SYSTEMErrStubs TypesStubs
-#CameraStubs_LIBS = baciStubs acscomponentStubs SYSTEMErrStubs TypesStubs
-#StorageStubs_LIBS = acscomponent TypesStubs
 
 #
 # Jarfiles and their directories
