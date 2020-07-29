@@ -72,12 +72,14 @@ xxxxx_LIBS      =
 #
 # Includes (.h) files (public only)
 # ---------------------------------
-INCLUDES        =
+INCLUDES        = DataBaseImpl.h
 
 #
 # Libraries (public and local)
 # ----------------------------
-LIBRARIES       =
+LIBRARIES       = DataBaseImpl
+DataBaseImpl_OBJECTS = DataBaseImpl
+DataBaseImpl_LIBS = DataBaseStubs acscomponent
 LIBRARIES_L     =
 
 #
