@@ -1,20 +1,5 @@
-
 #*******************************************************************************
-# PPPPPPPP
-#
-# "@(#) $Id$"
-#
-# Makefile of ........
-#
-# who       when      what
-# --------  --------  ----------------------------------------------
-# almamgr  29/07/20  created
-#
-
-# ALMA - Atacama Large Millimeter Array
-# Copyright (c) ESO - European Southern Observatory, 2014
-# (in the framework of the ALMA collaboration).
-# All rights reserved.
+# ACS Community - https://github.com/ACS-Community/ACS-Workshop
 # 
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -23,16 +8,15 @@
 # 
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 # 
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+#
 #*******************************************************************************
-
-#*******************************************************************************
-# This Makefile follows ALMA/ACS Standards (see Makefile(5) for more).
+# This Makefile follows VLT Standards (see Makefile(5) for more).
 #*******************************************************************************
 # REMARKS
 #    None
@@ -72,14 +56,12 @@ xxxxx_LIBS      =
 #
 # Includes (.h) files (public only)
 # ---------------------------------
-INCLUDES        = DataBaseImpl.h
+INCLUDES        =
 
 #
 # Libraries (public and local)
 # ----------------------------
-LIBRARIES       = DataBaseImpl
-DataBaseImpl_OBJECTS = DataBaseImpl
-DataBaseImpl_LIBS = DataBaseStubs acscomponent
+LIBRARIES       =
 LIBRARIES_L     =
 
 #
@@ -130,25 +112,31 @@ tttlll_OBJECTS  =
 #
 # Configuration Database Files
 # ----------------------------
-CDB_SCHEMAS = 
+CDB_SCHEMAS = Scheduler
+
+#
+# Generate ACS Error System classes
+#
+ACSERRDEF := SYSTEMErr
 
 # 
 # IDL Files and flags
 # 
-IDL_FILES =
-TAO_IDLFLAGS =
+IDL_FILES = Scheduler
+IDL_TAO_FLAGS = 
 USER_IDL =
+
+SchedulerStubs_LIBS = acscomponentStubs SYSTEMErrStubs
+
 #
 # Jarfiles and their directories
 #
-JARFILES= 
-jjj_DIRS=
-jjj_EXTRAS=
-# For expressing dependencies between jarfiles (parallel builds)
-jjj_JLIBS= 
+JARFILES=SchedulerImpl
+SchedulerImpl_DIRS=acsws 
+jjj_EXTRAS= 
 #
 # java sources in Jarfile on/off
-DEBUG= 
+DEBUG=on 
 #
 # ACS XmlIdl generation on/off
 #
@@ -156,7 +144,7 @@ XML_IDL=
 #
 # Java Component Helper Classes generation on/off
 #
-COMPONENT_HELPERS=
+COMPONENT_HELPERS=on
 #
 # Java Entity Classes generation on/off
 #
