@@ -766,8 +766,12 @@
  /alma/ACS-2020JUN/ACSSW/include/baciErrTypePropertyS_T.cpp \
  /alma/ACS-2020JUN/ACSSW/include/baciS_T.h \
  /alma/ACS-2020JUN/ACSSW/include/baciS_T.cpp \
+ /home/almamgr/INTROOT/include/InstrumentS.h \
  /home/almamgr/INTROOT/include/InstrumentC.h \
  /home/almamgr/INTROOT/include/InstrumentC.inl \
+ /home/almamgr/INTROOT/include/SYSTEMErr.h \
+ /alma/ACS-2020JUN/ACSSW/include/acserrExceptionManager.h \
+ /alma/ACS-2020JUN/ACSSW/include/acserrGenExport.h \
  /alma/ACS-2020JUN/ACSSW/include/maciACSComponentDefines.h \
  /alma/ACS-2020JUN/ACSSW/include/acserrACSbaseExImpl.h \
  /alma/ACS-2020JUN/ACSSW/include/baciCharacteristicComponentImpl.h \

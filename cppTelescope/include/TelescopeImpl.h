@@ -9,7 +9,8 @@
 #include <TypesS.h>
 #include <TelescopeS.h>
 #include <TelescopeControlS.h>
-#include <InstrumentC.h>
+#include <InstrumentS.h>
+#include <SYSTEMErr.h>
 
 
 //class TelescopeImpl; // declaration
@@ -26,6 +27,7 @@ class TelescopeImpl: public acscomponent::ACSComponentImpl,public virtual POA_TE
   private:
     TYPES::Position Pos;
     TELESCOPE_MODULE::TelescopeControl_var telescope_pointer;
+    INSTRUMENT_MODULE::Instrument_var instrument_pointer;
 }; 
 
 
