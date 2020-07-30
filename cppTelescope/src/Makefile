@@ -61,9 +61,9 @@ EXECUTABLES_L   =
 
 #
 # <brief description of xxxxx program>
-xxxxx_OBJECTS   =	
-xxxxx_LDFLAGS   =
-xxxxx_LIBS      =
+TelescopeImpl_OBJECTS  = TelescopeImpl
+xxxx_LDFLAGS   =
+TelescopeImpl_LIBS      = TelescopeStubs TelescopeControlStubs acscomponent ACSErrTypeCORBA maci SYSTEMErr 
 
 #
 # special compilation flags for single c sources
@@ -72,12 +72,12 @@ xxxxx_LIBS      =
 #
 # Includes (.h) files (public only)
 # ---------------------------------
-INCLUDES        =
+INCLUDES        = TelescopeImpl.h
 
 #
 # Libraries (public and local)
 # ----------------------------
-LIBRARIES       =
+LIBRARIES       = TelescopeImpl
 LIBRARIES_L     =
 
 #
