@@ -13,9 +13,9 @@ InstrumentComponentImpl::~InstrumentComponentImpl() {
     cleanup();
 }
 
-void InstrumentComponentImpl::throwIfOff() {
+void InstrumentComponentImpl::throwIfOff(const char *file, unsigned long line) {
     if (!isOn) {
-        throw SYSTEMErr::CameraIsOffExImpl(__FILE__, __LINE__, "Camera is OFF!").getCameraIsOffEx();
+        throw SYSTEMErr::CameraIsOffExImpl(file, line, "Camera is OFF!").getCameraIsOffEx();
     }
 }
 
@@ -82,7 +82,7 @@ void InstrumentComponentImpl::cameraOff (void) {
 }
 
 ::TYPES::ImageType * InstrumentComponentImpl::takeImage (::CORBA::Long exposureTime) {
-    throwIfOff();
+    throwIfOff(__FILE__, __LINE__);
     ::TYPES::ImageType *res = nullptr;
     std::ostringstream exposureTimeStr;
     std::string iso("ISO400");
@@ -99,17 +99,17 @@ void InstrumentComponentImpl::cameraOff (void) {
 }
 
 void InstrumentComponentImpl::setRGB (const ::TYPES::RGB & rgbConfig) {
-    throwIfOff();
+    throwIfOff(__FILE__, __LINE__);
     myRGBConfig = rgbConfig;
 }
 
 void InstrumentComponentImpl::setPixelBias (::CORBA::Long bias) {
-    throwIfOff();
+    throwIfOff(__FILE__, __LINE__);
     myBias = bias;
 }
 
 void InstrumentComponentImpl::setResetLevel (::CORBA::Long resetLevel) {
-    throwIfOff();
+    throwIfOff(__FILE__, __LINE__);
     myResetLevel = resetLevel;
 }
 
