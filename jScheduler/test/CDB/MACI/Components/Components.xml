@@ -27,8 +27,8 @@
                              Type="IDL:acsws/CONSOLE_MODULE/Console:1.0"
                              Container="pySimContainer" ImplLang="py" />
 
-      <e Name="CPP_SCHEDULER"   Code="cppSchedulingImpl"
-                             Type="IDL:acsws/workshop/cppScheduling:1.0"
-                             Container="bilboContainer" ImplLang="cpp" />
+      <e Name="SCHEDULER"   Code="acsws.SCHEDULER_MODULE.SchedulerImpl.SchedulerComponentHelper"
+                             Type="IDL:acsws/SCHEDULER_MODULE/Scheduler:1.0"
+                             Container="frodoContainer" ImplLang="java" />
 </Components>
 

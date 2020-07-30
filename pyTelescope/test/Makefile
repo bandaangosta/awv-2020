@@ -8,7 +8,7 @@
 #
 # who       when      what
 # --------  --------  ----------------------------------------------
-# almamgr  27/07/20  created
+# almamgr  28/07/20  created
 #
 
 # ALMA - Atacama Large Millimeter Array
@@ -72,18 +72,17 @@ xxxxx_LIBS      =
 #
 # Includes (.h) files (public only)
 # ---------------------------------
-INCLUDES        = cppSchedulingImpl.h
+INCLUDES        =
 
 #
 # Libraries (public and local)
 # ----------------------------
-LIBRARIES       = cppSchedulingImpl
+LIBRARIES       =
 LIBRARIES_L     =
 
 #
 # <brief description of lllll library>
-cppSchedulingImpl_OBJECTS   = cppSchedulingImpl
-cppSchedulingImpl_LIBS      = cppSchedulingStubs
+lllll_OBJECTS   =
 
 #
 # Scripts (public and local)
@@ -106,7 +105,7 @@ PY_SCRIPTS_L       =
 PY_MODULES         =
 PY_MODULES_L       =
 
-PY_PACKAGES        =
+PY_PACKAGES        = Telescope
 PY_PACKAGES_L      =
 pppppp_MODULES	   =
 
@@ -134,12 +133,9 @@ CDB_SCHEMAS =
 # 
 # IDL Files and flags
 # 
-IDL_FILES = cppScheduling
+IDL_FILES =
 TAO_IDLFLAGS =
 USER_IDL =
-
-cppSchedulingStubs_LIBS = acscomponentStubs
-
 #
 # Jarfiles and their directories
 #
@@ -158,7 +154,7 @@ XML_IDL=
 #
 # Java Component Helper Classes generation on/off
 #
-COMPONENT_HELPERS=on
+COMPONENT_HELPERS=
 #
 # Java Entity Classes generation on/off
 #

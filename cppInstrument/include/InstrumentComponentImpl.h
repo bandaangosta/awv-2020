@@ -22,6 +22,9 @@
 class InstrumentComponentImpl: public virtual acscomponent::ACSComponentImpl, public POA_INSTRUMENT_MODULE::Instrument
 {
   #warning TODO: CORBA calls instead of couts
+  bool isOn, isConfigured;
+  ::CORBA::Long myBias, myResetLevel;
+  ::TYPES::RGB myRGBConfig;
 
   public:
     InstrumentComponentImpl(const ACE_CString& name, maci::ContainerServices * containerServices);

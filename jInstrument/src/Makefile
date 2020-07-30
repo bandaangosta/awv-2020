@@ -134,17 +134,19 @@ CDB_SCHEMAS =
 # IDL Files and flags
 # 
 IDL_FILES =
+#IDL_FILES = Instrument
+#InstrumentStubs_LIBS = acscomponentStubs
 TAO_IDLFLAGS =
 USER_IDL =
 #
 # Jarfiles and their directories
 #
 JARFILES = jInstrument
-jTelescope_DIRS = workshop/instrument
+jInstrument_DIRS = workshop
 jjj_DIRS=
 jjj_EXTRAS=
 # For expressing dependencies between jarfiles (parallel builds)
-jjj_JLIBS= 
+#jjj_JLIBS= TypesStubs
 #
 # java sources in Jarfile on/off
 DEBUG= 
@@ -155,7 +157,7 @@ XML_IDL=
 #
 # Java Component Helper Classes generation on/off
 #
-COMPONENT_HELPERS=
+COMPONENT_HELPERS=on
 #
 # Java Entity Classes generation on/off
 #
