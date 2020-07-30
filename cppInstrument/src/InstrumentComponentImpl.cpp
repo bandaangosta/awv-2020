@@ -86,7 +86,7 @@ void InstrumentComponentImpl::cameraOff (void) {
     throwIfOff(__FILE__, __LINE__);
     ::TYPES::ImageType *res = nullptr;
     std::ostringstream exposureTimeStr;
-    std::string iso("ISO400");
+    std::string iso("400");
     exposureTimeStr << exposureTime;
 
     try {
