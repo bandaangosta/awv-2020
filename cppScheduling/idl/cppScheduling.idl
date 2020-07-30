@@ -1,0 +1,21 @@
+#ifndef _CPP_SCHEDULING_IDL_
+#define _CPP_SCHEDULING_IDL_
+ 
+#pragma prefix "acsws"
+ 
+#include <acscomponent.idl>
+ 
+module workshop {
+    interface cppScheduling : ACS::ACSComponent {
+        // Just for testing :)
+        string printHello();
+        // Start the cpp scheduler
+        void start();
+        // Stop the cpp scheduler
+        void stop();
+        // Return the ID of the current proposal under execution
+        long proposalUnderExecution();
+    };
+};
+ 
+#endif

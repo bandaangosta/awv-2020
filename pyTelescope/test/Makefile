@@ -8,7 +8,7 @@
 #
 # who       when      what
 # --------  --------  ----------------------------------------------
-# almamgr  29/07/20  created
+# almamgr  28/07/20  created
 #
 
 # ALMA - Atacama Large Millimeter Array
@@ -72,14 +72,12 @@ xxxxx_LIBS      =
 #
 # Includes (.h) files (public only)
 # ---------------------------------
-INCLUDES        = DataBaseImpl.h
+INCLUDES        =
 
 #
 # Libraries (public and local)
 # ----------------------------
-LIBRARIES       = DataBaseImpl
-DataBaseImpl_OBJECTS = DataBaseImpl
-DataBaseImpl_LIBS = DataBaseStubs acscomponent
+LIBRARIES       =
 LIBRARIES_L     =
 
 #
@@ -107,7 +105,7 @@ PY_SCRIPTS_L       =
 PY_MODULES         =
 PY_MODULES_L       =
 
-PY_PACKAGES        =
+PY_PACKAGES        = Telescope
 PY_PACKAGES_L      =
 pppppp_MODULES	   =
 

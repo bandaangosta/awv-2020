@@ -72,7 +72,7 @@ xxxxx_LIBS      =
 #
 # Includes (.h) files (public only)
 # ---------------------------------
-INCLUDES        = SchedulingImpl.h
+INCLUDES        = cppSchedulingImpl.h
 
 #
 # Libraries (public and local)
@@ -82,8 +82,8 @@ LIBRARIES_L     =
 
 #
 # <brief description of lllll library>
-cppSchedulingImpl_OBJECTS   = SchedulingImpl
-cppSchedulingImpl_LIBS      = SchedulingStubs
+cppSchedulingImpl_OBJECTS   = cppSchedulingImpl
+cppSchedulingImpl_LIBS      = cppSchedulingStubs
 
 #
 # Scripts (public and local)
@@ -134,9 +134,12 @@ CDB_SCHEMAS =
 # 
 # IDL Files and flags
 # 
-IDL_FILES =
+IDL_FILES = cppScheduling
 TAO_IDLFLAGS =
 USER_IDL =
+
+cppSchedulingStubs_LIBS = acscomponentStubs
+
 #
 # Jarfiles and their directories
 #
@@ -155,7 +158,7 @@ XML_IDL=
 #
 # Java Component Helper Classes generation on/off
 #
-COMPONENT_HELPERS=
+COMPONENT_HELPERS=on
 #
 # Java Entity Classes generation on/off
 #
