@@ -15,6 +15,7 @@ InstrumentComponentImpl::~InstrumentComponentImpl() {
 
 void InstrumentComponentImpl::throwIfOff(const char *file, unsigned long line) {
     if (!isOn) {
+        ACS_SHORT_LOG((LM_ERROR, "Requested operation that requires a working camera, but it's OFF!. File: %s, Line: %lu", file, line));
         throw SYSTEMErr::CameraIsOffExImpl(file, line, "Camera is OFF!").getCameraIsOffEx();
     }
 }
@@ -90,7 +91,6 @@ void InstrumentComponentImpl::cameraOff (void) {
 
     try {
         res = myCamera->getFrame(exposureTimeStr.str().c_str(), iso.c_str());
-        ACS_SHORT_LOG((LM_INFO, "myCamera->getFrame returned %p", res));
     }
     catch (std::exception &e) {
         ACS_SHORT_LOG((LM_ERROR, "Error taking picture! Reported: %s", e.what()));
