@@ -22,6 +22,10 @@ public class InstrumentImpl extends ComponentImplBase implements InstrumentOpera
     private int fResetLevel = 0;
     private Camera fCamera = null;
 
+    public InstrumentImpl() {
+        super();
+    }
+
     // Lifecycle implementation
     public void initialize() {
         // super.initialize(); TODO needed?
@@ -36,8 +40,7 @@ public class InstrumentImpl extends ComponentImplBase implements InstrumentOpera
         try {
             fCamera = CameraHelper.narrow(this.m_containerServices.getComponent("CAMERA"));
         } catch (AcsJContainerServicesEx ex) {
-            m_logger.severe("Cannot retrieve Camera component. Huge problem!!\n");
-            ex.printStackTrace();
+            m_logger.severe("Cannot retrieve Camera component. Huge problem!!\n" + ex.getStackTrace());
         }
     }
 
@@ -55,10 +58,6 @@ public class InstrumentImpl extends ComponentImplBase implements InstrumentOpera
     }
 
     // idl implementation
-    public InstrumentImpl() {
-        super();
-    }
-
     @Override
     public void cameraOn() {
         m_logger.finer("Switching camera on.");
