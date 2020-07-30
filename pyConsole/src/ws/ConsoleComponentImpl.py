@@ -4,6 +4,10 @@ from Acspy.Servants.ContainerServices      import ContainerServices
 from Acspy.Servants.ComponentLifecycle  import ComponentLifecycle
 from Acspy.Servants.ACSComponent         import ACSComponent
 import TYPES
+import SYSTEMErr
+
+MODE_MANUAL = False
+MODE_AUTOMATIC = True
 
 class ConsoleComponentImpl(CONSOLE_MODULE__POA.Console,  
                              ACSComponent, 
@@ -13,6 +17,7 @@ class ConsoleComponentImpl(CONSOLE_MODULE__POA.Console,
         ACSComponent.__init__(self)
         ContainerServices.__init__(self)
         self._logger = self.getLogger()
+        self.mode = MODE_MANUAL
     #­­Override ComponentLifecycle methods­­­­­­­­­­­­­­­­­­­­­­­­­­­­­
 
     def initialize(self):
@@ -28,7 +33,32 @@ class ConsoleComponentImpl(CONSOLE_MODULE__POA.Console,
      #def sayHello(self):
      #    return "hello"
     def setMode(self, mode):
-        self.mode = mode         
+        # mode: True -> Automatic mode
+        #       False -> Manual mode
+        
+        # Try to go to Manual mode
+        #if not mode:
+        if mode == MODE_MANUAL:
+            # If current mode is Manual, do nothing
+            #if not self.mode:
+            if self.mode == MODE_MANUAL:
+                pass
+            # If current mode is Automatic, stop scheduler and change current mode
+            else:
+                scheduler = self.getComponent("SCHEDULER")
+                scheduler.stop()
+                self.mode = mode            
+        # Try to go to Automatic mode
+        else:
+            # If current mode is Manual, start scheduler and change current mode
+            #if not self.mode:
+            if self.mode == MODE_MANUAL:
+                scheduler = self.getComponent("SCHEDULER")
+                scheduler.start()
+                self.mode = mode                
+            # If current mode is Automatic, raise SYSTEMErr::AlreadyInAutomaticEx exception
+            else:
+                raise SYSTEMErr.AlreadyInAutomaticEx        
 
     def getMode(self):
         return self.mode         
