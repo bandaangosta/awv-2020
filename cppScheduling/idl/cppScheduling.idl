@@ -7,8 +7,6 @@
  
 module workshop {
     interface Scheduler : ACS::ACSComponent {
-        // Just for testing :)
-        string printHello();
         // Start the cpp scheduler
         void start();
         // Stop the cpp scheduler

@@ -18,11 +18,12 @@
 #include <SYSTEMErr.h>
 
 #include <thread>
+#include <exception>
 
 // Declare Scheduling class
 class cppSchedulingImpl : public virtual acscomponent::ACSComponentImpl, public virtual POA_workshop::Scheduler {
   private:
-    long proposalUnderExecutionID;
+    CORBA::Long proposalUnderExecutionID;
     bool isRunning;
     bool processObservations;
     // std::thread

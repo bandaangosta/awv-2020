@@ -84,8 +84,7 @@ LIBRARIES_L     =
 # <brief description of lllll library>
 cppSchedulingImpl_OBJECTS   = cppSchedulingImpl
 # <LibraryName>_LIBS = <ListOfLibraryDependencies> <Interface>Stubs acscomponent ServiceErr <Interface>Err #etc.
-cppSchedulingImpl_LIBS      =  cppSchedulingStubs acscomponent SYSTEMErr 
-
+cppSchedulingImpl_LIBS      =  cppSchedulingStubs acscomponent SYSTEMErr DataBaseStubs TelescopeStubs InstrumentStubs
 #
 # Scripts (public and local)
 # ----------------------------
