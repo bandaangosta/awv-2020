@@ -112,7 +112,7 @@ tttlll_OBJECTS  =
 #
 # Configuration Database Files
 # ----------------------------
-CDB_SCHEMAS = Scheduler
+CDB_SCHEMAS =
 
 #
 # Generate ACS Error System classes
