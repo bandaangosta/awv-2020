@@ -1,21 +1,58 @@
 #include "InstrumentComponentImpl.h"
-//#include <logging.h>
+#include <logging.h>
 #include <iostream>
+#include <SYSTEMErr.h>
+#include <exception>
 
 InstrumentComponentImpl::InstrumentComponentImpl(const ACE_CString& name, maci::ContainerServices * containerServices) : acscomponent::ACSComponentImpl::ACSComponentImpl(name, containerServices) {
-    isOn = false;
+
 }
 
 InstrumentComponentImpl::~InstrumentComponentImpl() {
+    ACS_SHORT_LOG((LM_INFO, "Thanks for measuring with us today!"));
+    cleanup();
+}
+
+void InstrumentComponentImpl::initialize() {
+    isOn = false;
+    isConfigured = false;
+    myBias = 0;
+    myResetLevel = 0;
+    myRGBConfig.red = 0;
+    myRGBConfig.green = 0;
+    myRGBConfig.blue = 0;
+    ACS_SHORT_LOG((LM_INFO, "Instrument ready to serve!"));
+}
+
+void InstrumentComponentImpl::execute() {
+    try {
+        myCamera = this->getContainerServices()->getComponent<CAMERA_MODULE::Camera>("CAMERA");
+    }
+    catch (std::exception &e) {
+        #warning Throw error via CORBA
+        ACS_SHORT_LOG((LM_ERROR, "Error in execute(): %s", e.what()));
+    }
+
+}
+
+void InstrumentComponentImpl::cleanup() {
+    myCamera->off();
+    this->getContainerServices()->releaseComponent(myCamera->name());
+}
+
+void InstrumentComponentImpl::aboutToAbort() {
+    ACS_SHORT_LOG((LM_WARNING, "EMERGENCY ABORT!"));
+    cleanup();
 }
 
 void InstrumentComponentImpl::cameraOn (void) {
     //Logging::Logger::LoggerSmartPtr logger = Logging::Logger::getNamedLogger("cppInstrument");
     if (!isOn) {
-        std::cout << "Turning camera ON" << std::endl;
+        ACS_SHORT_LOG((LM_INFO, "Turning camera ON"));
+        myCamera->on();
         isOn = true;
         if (isConfigured) {
-            std::cout << "Reapplying configs for camera" << std::endl;
+            ACS_SHORT_LOG((LM_INFO, "Reconfiguring the camera"));
             setRGB(myRGBConfig);
             setPixelBias(myBias);
             setResetLevel(myResetLevel);
@@ -23,17 +60,18 @@ void InstrumentComponentImpl::cameraOn (void) {
         isConfigured = true;
     }
     else {
-        std::cout << "Camera was already on!" << std::endl;
+        ACS_SHORT_LOG((LM_WARNING, "Camera is already ON!"));
     }
 }
 
 void InstrumentComponentImpl::cameraOff (void) {
     if (isOn) {
-        std::cout << "Turning camera OFF" << std::endl;
+        ACS_SHORT_LOG((LM_INFO, "Turning camera OFF"));
+        myCamera->off();
         isOn = false;
     }
     else {
-        std::cout << "Camera was already off!" << std::endl;
+        ACS_SHORT_LOG((LM_WARNING, "Camera is already OFF!"));
     }
 }
 
