@@ -21,6 +21,7 @@ public class InstrumentImpl extends ComponentImplBase implements InstrumentOpera
     private int fPixelBias = 0;
     private int fResetLevel = 0;
     private Camera fCamera = null;
+    static final String isoValue = "400";
 
     public InstrumentImpl() {
         super();
@@ -40,7 +41,8 @@ public class InstrumentImpl extends ComponentImplBase implements InstrumentOpera
         try {
             fCamera = CameraHelper.narrow(this.m_containerServices.getComponent("CAMERA"));
         } catch (AcsJContainerServicesEx ex) {
-            m_logger.severe("Cannot retrieve Camera component. Huge problem!!\n" + ex.getStackTrace());
+            m_logger.severe("Cannot retrieve Camera component. Huge problem!!");
+            throw new RuntimeException(ex);
         }
     }
 
@@ -82,10 +84,13 @@ public class InstrumentImpl extends ComponentImplBase implements InstrumentOpera
     @Override
     public byte[] takeImage(int exposureTime) throws CameraIsOffEx {
         if ((fCamera == null) || !fIsCameraOn) {
+            m_logger.severe("Please switch on the camera first.");
             throw new CameraIsOffEx();
         }
 
-        return fCamera.getFrame(String.valueOf(exposureTime), fCamera.isoSpeed().get_sync(new CompletionHolder()));
+        // fCamera.isoSpeed().get_sync(new CompletionHolder())
+        m_logger.debug("---->>>>>" + new String(fCamera.getFrame(String.valueOf(exposureTime), isoValue)));
+        return fCamera.getFrame(String.valueOf(exposureTime), isoValue);
     }
 
     @Override
