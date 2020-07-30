@@ -13,9 +13,10 @@ InstrumentComponentImpl::~InstrumentComponentImpl() {
     cleanup();
 }
 
-void InstrumentComponentImpl::throwIfOff() {
+void InstrumentComponentImpl::throwIfOff(const char *file, unsigned long line) {
     if (!isOn) {
-        throw SYSTEMErr::CameraIsOffExImpl(__FILE__, __LINE__, "Camera is OFF!").getCameraIsOffEx();
+        ACS_SHORT_LOG((LM_ERROR, "Requested operation that requires a working camera, but it's OFF!. File: %s, Line: %lu", file, line));
+        throw SYSTEMErr::CameraIsOffExImpl(file, line, "Camera is OFF!").getCameraIsOffEx();
     }
 }
 
@@ -82,15 +83,14 @@ void InstrumentComponentImpl::cameraOff (void) {
 }
 
 ::TYPES::ImageType * InstrumentComponentImpl::takeImage (::CORBA::Long exposureTime) {
-    throwIfOff();
+    throwIfOff(__FILE__, __LINE__);
     ::TYPES::ImageType *res = nullptr;
     std::ostringstream exposureTimeStr;
-    std::string iso("ISO400");
+    std::string iso("400");
     exposureTimeStr << exposureTime;
 
     try {
         res = myCamera->getFrame(exposureTimeStr.str().c_str(), iso.c_str());
-        ACS_SHORT_LOG((LM_INFO, "myCamera->getFrame returned %p", res));
     }
     catch (std::exception &e) {
         ACS_SHORT_LOG((LM_ERROR, "Error taking picture! Reported: %s", e.what()));
@@ -99,17 +99,17 @@ void InstrumentComponentImpl::cameraOff (void) {
 }
 
 void InstrumentComponentImpl::setRGB (const ::TYPES::RGB & rgbConfig) {
-    throwIfOff();
+    throwIfOff(__FILE__, __LINE__);
     myRGBConfig = rgbConfig;
 }
 
 void InstrumentComponentImpl::setPixelBias (::CORBA::Long bias) {
-    throwIfOff();
+    throwIfOff(__FILE__, __LINE__);
     myBias = bias;
 }
 
 void InstrumentComponentImpl::setResetLevel (::CORBA::Long resetLevel) {
-    throwIfOff();
+    throwIfOff(__FILE__, __LINE__);
     myResetLevel = resetLevel;
 }
 
