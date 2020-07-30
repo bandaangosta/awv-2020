@@ -1,9 +1,18 @@
 #include <DataBaseImpl.h>
  
-DataBaseImpl::DataBaseImpl(const ACE_CString& name, maci::ContainerServices * containerServices) : ACSComponentImpl(name, containerServices) {
+DataBaseImpl::DataBaseImpl(const ACE_CString& name, maci::ContainerServices * containerServices) 
+: ACSComponentImpl(name, containerServices) 
+, m_current_proposal_pid(0) 
+, m_proposals(new TYPES::ProposalList(999))
+, m_targets(new TYPES::TargetList())
+{
+
 }
  
-DataBaseImpl::~DataBaseImpl() {
+DataBaseImpl::~DataBaseImpl() 
+{
+    delete m_proposals;
+    delete m_targets;
 }
  
 /**
@@ -14,8 +23,16 @@ DataBaseImpl::~DataBaseImpl() {
  */
 CORBA::Long DataBaseImpl::storeProposal(const TYPES::TargetList &targets)
 {
-    //TODO: implement
-    return 0;
+    //TODO: implement - maybe add check for empty targets
+    //TODO: this will overflow at some point
+    TYPES::Proposal tmp_proposal;
+    tmp_proposal.pid = m_current_proposal_pid;
+    tmp_proposal.targets = targets;
+    tmp_proposal.status = DataBase::STATUS_INITIAL_PROPOSAL; 
+    (*m_proposals)[m_current_proposal_pid] = tmp_proposal;
+    CORBA::Long tmp_ret = m_current_proposal_pid;
+    m_current_proposal_pid++;
+    return tmp_ret;
 }
 
 /** 
@@ -27,8 +44,14 @@ CORBA::Long DataBaseImpl::storeProposal(const TYPES::TargetList &targets)
  */
 CORBA::Long DataBaseImpl::getProposalStatus(CORBA::Long pid)
 {
-    //TODO: implement
-    return 0;
+    if (pid<m_proposals.length())
+    {
+        return (*m_proposals)[pid].status;
+    }
+    else
+    {
+        return DataBase::STATUS_NO_SUCH_PROPOSAL;
+    }
 }
 
 /** 
@@ -39,6 +62,12 @@ CORBA::Long DataBaseImpl::getProposalStatus(CORBA::Long pid)
 void DataBaseImpl::removeProposal(CORBA::Long pid)
 {
     //TODO: implement
+    //Victor on it
+    /*
+    */
+
+
+
 }
 
 /**
@@ -52,6 +81,7 @@ void DataBaseImpl::removeProposal(CORBA::Long pid)
 TYPES::ImageList * DataBaseImpl::getProposalObservations(CORBA::Long pid)
 {
     //TODO: implement
+    
     //raises(SYSTEMErr::ProposalNotYetReadyEx);
     return m_images;
 }
