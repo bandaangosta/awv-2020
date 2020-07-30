@@ -11,13 +11,11 @@ from Acspy.Servants.ContainerServices import ContainerServices
 from Acspy.Servants.ComponentLifecycle import ComponentLifecycle
  
 #Error definitions for catching exceptions
-#import ServiceErr
-#import TelescopeErr
+import SYSTEMErr
  
  
 #Error definitions for creating and raising exceptions
-#import ServiceErrImpl
-#import TelescopeErrImpl
+import SYSTEMErrImpl
 
 import TYPES
 import time
@@ -42,21 +40,27 @@ class Telescope(TELESCOPE_MODULE__POA.Telescope, ACSComponent,
         self.releaseComponent("TELESCOPE_CONTROL")
         self.releaseComponent("INSTRUMENT")
 
+    def aboutToAbort(self):
+        self._logger.logWarning("Telescope is about to Abort!")
+        
     def moveTo(self, coordinates):
-        #try:
+        if coordinates.el not in [0, 90] or coordinates.az not in [0, 360]:
+            raise SYSTEMErrImpl.PositionOutOfLimitsExImpl()
+        self._logger.logInfo("Received target coordinates: " + str(coordinates.el)+' , '+str(coordinates.az))
+        self._logger.logInfo("Moving telescope...")
         self._telescope_control.objfix(coordinates.el, coordinates.az)
-        self._logger.logInfo("Telescope is moving to "+str(coordinates.el)+" , "+str(coordinates.az))
-        #except Exception, x:
-        #    raise TelescopeErr.PositionOutOfLimitsEx #To be implemented
+        while not self._hasTelescopeReachedPosition(coordinates, self.getCurrentPosition()):
+            time.sleep(0.5)
+        # if not self._hasTelescopeReachedPosition(coordinates):
+        #     raise SYSTEMErr.PositionOutOfLimitsEx
+        self._logger.logInfo("Telescope is pointed to "+str(coordinates.el)+" , "+str(coordinates.az))
 
     def observe(self, coordinates, exposureTime):
         # called by scheduler
         # uses interface functions Instruments.takeImage(exposureTime) and TelescopeControl.objfix()
         # raises SYSTEMerr::PositionOutOfLimitsEx in case of failure.
-        self._logger.logInfo("Moving telescope...")
+        
         self.moveTo(coordinates)
-        while not self._hasTelescopeReachedPosition(coordinates, self.getCurrentPosition()):
-            time.sleep(0.5)
         self._logger.logInfo("Taking "+str(exposureTime)+" s image.")
         return self._instrument.takeImage(exposureTime)
     
