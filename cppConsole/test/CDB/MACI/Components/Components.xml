@@ -15,17 +15,17 @@
                              Type="IDL:acsws/DATABASE_MODULE/DataBase:1.0"
                              Container="pySimContainer" ImplLang="py" />
 
-      <e Name="INSTRUMENT"   Code="workshop.instrument.InstrumentComponentHelper"
+      <e Name="INSTRUMENT"   Code="Acssim.Servants.Simulator"
                              Type="IDL:acsws/INSTRUMENT_MODULE/Instrument:1.0"
-                             Container="frodoContainer" ImplLang="java" />
+                             Container="pySimContainer" ImplLang="py" />
 
       <e Name="CAMERA"   Code="Acssim.Servants.Simulator"
                              Type="IDL:acsws/CAMERA_MODULE/Camera:1.0"
                              Container="pySimContainer" ImplLang="py" />
 
-      <e Name="CONSOLE"   Code="Acssim.Servants.Simulator"
+      <e Name="CONSOLE"   Code="ConsoleImpl"
                              Type="IDL:acsws/CONSOLE_MODULE/Console:1.0"
-                             Container="pySimContainer" ImplLang="py" />
+                             Container="bilboContainer" ImplLang="cpp" />
 
       <e Name="SCHEDULER"   Code="Acssim.Servants.Simulator"
                              Type="IDL:acsws/SCHEDULER_MODULE/Scheduler:1.0"
