@@ -44,9 +44,14 @@ CORBA::Long DataBaseImpl::storeProposal(const TYPES::TargetList &targets)
  */
 CORBA::Long DataBaseImpl::getProposalStatus(CORBA::Long pid)
 {
-    //TODO: implement
-    std::cout << "status is TODO" << std::endl;
-    return 0;
+    if (pid<m_proposals.length())
+    {
+        return (*m_proposals)[pid].status;
+    }
+    else
+    {
+        return DataBase::STATUS_NO_SUCH_PROPOSAL;
+    }
 }
 
 /** 
@@ -62,14 +67,17 @@ void DataBaseImpl::removeProposal(CORBA::Long pid)
     Removes the proposal associated with given proposal ID
     If the proposal ID is not present, then do not execute any operation and don't report any problem
     */
-   
+   TYPES::ProposalList tmp_list = m_proposals;
     // 1st check every item on our m_proposals
-    
-    // 2nd for every proposal check if the id matches the given pid
-
-        //if pid matches remove the proposal from the list
-
-    // 3rd if the pid is not on the list write a LOG telling that there is no pid on m_proposals
+    for(int i = 0;tmp_list.pid ;i++)
+    {
+        if (proposal.pid == pid){
+            //remove
+        } else {
+            //write LOG for current proposal
+        }
+    }
+    //write LOG at the end
 
 
 
