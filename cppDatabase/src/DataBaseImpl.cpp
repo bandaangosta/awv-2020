@@ -64,20 +64,7 @@ void DataBaseImpl::removeProposal(CORBA::Long pid)
     //TODO: implement
     //Victor on it
     /*
-    Removes the proposal associated with given proposal ID
-    If the proposal ID is not present, then do not execute any operation and don't report any problem
     */
-   TYPES::ProposalList tmp_list = m_proposals;
-    // 1st check every item on our m_proposals
-    for(int i = 0;tmp_list.pid ;i++)
-    {
-        if (proposal.pid == pid){
-            //remove
-        } else {
-            //write LOG for current proposal
-        }
-    }
-    //write LOG at the end
 
 
 
@@ -94,6 +81,7 @@ void DataBaseImpl::removeProposal(CORBA::Long pid)
 TYPES::ImageList * DataBaseImpl::getProposalObservations(CORBA::Long pid)
 {
     //TODO: implement
+    
     //raises(SYSTEMErr::ProposalNotYetReadyEx);
     return m_images;
 }
