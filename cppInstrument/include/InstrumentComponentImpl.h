@@ -27,7 +27,7 @@ class InstrumentComponentImpl: public virtual acscomponent::ACSComponentImpl, pu
   ::TYPES::RGB myRGBConfig;
   ::CAMERA_MODULE::Camera_var myCamera;
 
-  void throwIfOff();
+  void throwIfOff(const char *file = "", unsigned long line = 0);
 
   public:
     InstrumentComponentImpl(const ACE_CString& name, maci::ContainerServices * containerServices);
