@@ -1,8 +1,8 @@
 #include "InstrumentComponentImpl.h"
 #include <logging.h>
-#include <iostream>
 #include <SYSTEMErr.h>
 #include <exception>
+#include <sstream>
 
 InstrumentComponentImpl::InstrumentComponentImpl(const ACE_CString& name, maci::ContainerServices * containerServices) : acscomponent::ACSComponentImpl::ACSComponentImpl(name, containerServices) {
 
@@ -11,6 +11,12 @@ InstrumentComponentImpl::InstrumentComponentImpl(const ACE_CString& name, maci::
 InstrumentComponentImpl::~InstrumentComponentImpl() {
     ACS_SHORT_LOG((LM_INFO, "Thanks for measuring with us today!"));
     cleanup();
+}
+
+void InstrumentComponentImpl::throwIfOff() {
+    if (!isOn) {
+        throw SYSTEMErr::CameraIsOffExImpl(__FILE__, __LINE__, "Camera is OFF!").getCameraIsOffEx();
+    }
 }
 
 void InstrumentComponentImpl::initialize() {
@@ -76,23 +82,35 @@ void InstrumentComponentImpl::cameraOff (void) {
 }
 
 ::TYPES::ImageType * InstrumentComponentImpl::takeImage (::CORBA::Long exposureTime) {
-    std::cout << "Taking a nice starry sky picture with an exposure time of " << exposureTime << std::endl;
-    return nullptr;
+    throwIfOff();
+    ::TYPES::ImageType *res = nullptr;
+    std::ostringstream exposureTimeStr;
+    std::string iso("ISO400");
+    exposureTimeStr << exposureTime;
+
+    try {
+        res = myCamera->getFrame(exposureTimeStr.str().c_str(), iso.c_str());
+        ACS_SHORT_LOG((LM_INFO, "myCamera->getFrame returned %p", res));
+    }
+    catch (std::exception &e) {
+        ACS_SHORT_LOG((LM_ERROR, "Error taking picture! Reported: %s", e.what()));
+    }
+    return res;
 }
 
 void InstrumentComponentImpl::setRGB (const ::TYPES::RGB & rgbConfig) {
+    throwIfOff();
     myRGBConfig = rgbConfig;
-    std::cout << "Setting RGB values to R: " << rgbConfig.red << " G: " << rgbConfig.green << " B: " << rgbConfig.blue << std::endl;
 }
 
 void InstrumentComponentImpl::setPixelBias (::CORBA::Long bias) {
+    throwIfOff();
     myBias = bias;
-    std::cout << "Setting Pixel Bias to " << bias << std::endl;
 }
 
 void InstrumentComponentImpl::setResetLevel (::CORBA::Long resetLevel) {
+    throwIfOff();
     myResetLevel = resetLevel;
-    std::cout << "Setting reset level to " << resetLevel << std::endl;
 }
 
 /* --------------- [ MACI DLL support functions ] -----------------*/
