@@ -15,9 +15,9 @@
                              Type="IDL:acsws/DATABASE_MODULE/DataBase:1.0"
                              Container="pySimContainer" ImplLang="py" />
 
-      <e Name="INSTRUMENT"   Code="Acssim.Servants.Simulator"
+      <e Name="INSTRUMENT"   Code="workshop.instrument.InstrumentComponentHelper"
                              Type="IDL:acsws/INSTRUMENT_MODULE/Instrument:1.0"
-                             Container="pySimContainer" ImplLang="py" />
+                             Container="frodoContainer" ImplLang="java" />
 
       <e Name="CAMERA"   Code="Acssim.Servants.Simulator"
                              Type="IDL:acsws/CAMERA_MODULE/Camera:1.0"
