@@ -11,7 +11,7 @@
  
 //Skeleton interface for server implementation
 #include <InstrumentS.h>
- 
+#include <CameraC.h>
  
 //Error definitions for catching and raising exceptions
 //#include <ServiceErr.h>
@@ -25,10 +25,17 @@ class InstrumentComponentImpl: public virtual acscomponent::ACSComponentImpl, pu
   bool isOn, isConfigured;
   ::CORBA::Long myBias, myResetLevel;
   ::TYPES::RGB myRGBConfig;
+  ::CAMERA_MODULE::Camera_var myCamera;
+
+  void throwIfOff(const char *file = "", unsigned long line = 0);
 
   public:
     InstrumentComponentImpl(const ACE_CString& name, maci::ContainerServices * containerServices);
     virtual ~InstrumentComponentImpl();
+    virtual void initialize();
+    virtual void execute();
+    virtual void cleanup();
+    virtual void aboutToAbort();
     virtual void cameraOn (void);
     virtual void cameraOff (void);
     virtual ::TYPES::ImageType * takeImage (::CORBA::Long exposureTime);

@@ -31,6 +31,7 @@ class DataBaseImpl : public virtual acscomponent::ACSComponentImpl, public virtu
   private:
    TYPES::ProposalList *m_proposals;
    TYPES::ImageList *m_images;
+   CORBA::Long m_current_proposal_pid;
 };
  
 #endif
