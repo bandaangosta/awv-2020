@@ -69,7 +69,7 @@ void ConsoleImpl::cameraOn()
         throw SYSTEMErr::SystemInAutoModeExImpl(__FILE__, __LINE__, "cameraOn() Cannot manually control Camera in Auto mode.").getSystemInAutoModeEx();
     }
    
-    INSTRUMENT_MODULE::Instrument_var Instrument_comp = this->getContainerServices()->getComponent<INSTRUMENT_MODULE::Instrument>("Instrument");
+    INSTRUMENT_MODULE::Instrument_var Instrument_comp = this->getContainerServices()->getComponent<INSTRUMENT_MODULE::Instrument>("INSTRUMENT");
     Instrument_comp->cameraOn();
     this->getContainerServices()->releaseComponent(Instrument_comp->name());
 }
@@ -80,7 +80,7 @@ void ConsoleImpl::cameraOff()
     {
         throw SYSTEMErr::SystemInAutoModeExImpl(__FILE__, __LINE__, "cameraOff() Cannot manually control Camera in Auto mode.").getSystemInAutoModeEx();
     }
-    INSTRUMENT_MODULE::Instrument_var Instrument_comp = this->getContainerServices()->getComponent<INSTRUMENT_MODULE::Instrument>("Instrument");
+    INSTRUMENT_MODULE::Instrument_var Instrument_comp = this->getContainerServices()->getComponent<INSTRUMENT_MODULE::Instrument>("INSTRUMENT");
     Instrument_comp->cameraOff();
     this->getContainerServices()->releaseComponent(Instrument_comp->name());
 }
@@ -93,7 +93,7 @@ void ConsoleImpl::moveTelescope(const ::TYPES::Position & coordinates)
         throw SYSTEMErr::SystemInAutoModeExImpl(__FILE__, __LINE__, "moveTelescope() Cannot manually move telescope in Auto mode.").getSystemInAutoModeEx();
     }
     
-    TELESCOPE_MODULE::Telescope_var Telescope_comp = this->getContainerServices()->getComponent<TELESCOPE_MODULE::Telescope>("Telescope");
+    TELESCOPE_MODULE::Telescope_var Telescope_comp = this->getContainerServices()->getComponent<TELESCOPE_MODULE::Telescope>("TELESCOPE");
     
     Telescope_comp->moveTo(coordinates);
 
@@ -103,7 +103,7 @@ void ConsoleImpl::moveTelescope(const ::TYPES::Position & coordinates)
 
 ::TYPES::Position ConsoleImpl::getTelescopePosition()
 {
-    TELESCOPE_MODULE::Telescope_var Telescope_comp = this->getContainerServices()->getComponent<TELESCOPE_MODULE::Telescope>("Telescope");
+    TELESCOPE_MODULE::Telescope_var Telescope_comp = this->getContainerServices()->getComponent<TELESCOPE_MODULE::Telescope>("TELESCOPE");
     ::TYPES::Position p = Telescope_comp->getCurrentPosition();
     this->getContainerServices()->releaseComponent(Telescope_comp->name());
     
@@ -118,7 +118,7 @@ void ConsoleImpl::moveTelescope(const ::TYPES::Position & coordinates)
         throw SYSTEMErr::SystemInAutoModeExImpl(__FILE__, __LINE__, "getCameraImage() Cannot manually get camera image in Auto mode.").getSystemInAutoModeEx();
     }
 
-    INSTRUMENT_MODULE::Instrument_var Instrument_comp = this->getContainerServices()->getComponent<INSTRUMENT_MODULE::Instrument>("Instrument");
+    INSTRUMENT_MODULE::Instrument_var Instrument_comp = this->getContainerServices()->getComponent<INSTRUMENT_MODULE::Instrument>("INSTRUMENT");
     ::TYPES::ImageType * image = nullptr;
     long exposureTime = 1; //default value (max exp = 5)
   
@@ -135,7 +135,7 @@ void ConsoleImpl::setRGB (const ::TYPES::RGB & rgbConfig)
     {
         throw SYSTEMErr::SystemInAutoModeExImpl(__FILE__, __LINE__, "setRGB() Cannot manually control camera in Auto mode.").getSystemInAutoModeEx();
     }
-    INSTRUMENT_MODULE::Instrument_var Instrument_comp = this->getContainerServices()->getComponent<INSTRUMENT_MODULE::Instrument>("Instrument");
+    INSTRUMENT_MODULE::Instrument_var Instrument_comp = this->getContainerServices()->getComponent<INSTRUMENT_MODULE::Instrument>("INSTRUMENT");
     Instrument_comp->setRGB(rgbConfig);
     this->getContainerServices()->releaseComponent(Instrument_comp->name());
 }
@@ -146,7 +146,7 @@ void ConsoleImpl::setPixelBias (::CORBA::Long bias)
     {
         throw SYSTEMErr::SystemInAutoModeExImpl(__FILE__, __LINE__, "setPixelBias() Cannot manually set pixel bias camera in Auto mode.").getSystemInAutoModeEx();
     }
-    INSTRUMENT_MODULE::Instrument_var Instrument_comp = this->getContainerServices()->getComponent<INSTRUMENT_MODULE::Instrument>("Instrument");
+    INSTRUMENT_MODULE::Instrument_var Instrument_comp = this->getContainerServices()->getComponent<INSTRUMENT_MODULE::Instrument>("INSTRUMENT");
     Instrument_comp->setPixelBias(bias);
     this->getContainerServices()->releaseComponent(Instrument_comp->name());
 }
@@ -157,7 +157,7 @@ void ConsoleImpl::setResetLevel (::CORBA::Long resetLevel)
     {
         throw SYSTEMErr::SystemInAutoModeExImpl(__FILE__, __LINE__, "setResetLevel() Cannot manually control camera in Auto mode.").getSystemInAutoModeEx();
     }
-    INSTRUMENT_MODULE::Instrument_var Instrument_comp = this->getContainerServices()->getComponent<INSTRUMENT_MODULE::Instrument>("Instrument");
+    INSTRUMENT_MODULE::Instrument_var Instrument_comp = this->getContainerServices()->getComponent<INSTRUMENT_MODULE::Instrument>("INSTRUMENT");
     Instrument_comp->setResetLevel(resetLevel);
     this->getContainerServices()->releaseComponent(Instrument_comp->name());}
 
