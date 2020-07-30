@@ -21,14 +21,17 @@ class ConsoleComponentImpl(CONSOLE_MODULE__POA.Console,
     #­­Override ComponentLifecycle methods­­­­­­­­­­­­­­­­­­­­­­­­­­­­­
 
     def initialize(self):
-         try:
-             lamp = self.getComponent("LAMP1")
-             self.brightness = lamp._get_brightness()
-         except Exception, e:
-             print "LAMP1 unavailable:", e
+         #try:
+         #    lamp = self.getComponent("LAMP1")
+         #    self.brightness = lamp._get_brightness()
+         #except Exception, e:
+         #    print "LAMP1 unavailable:", e
+        pass
 
     def cleanUp(self):
-        self.releaseComponent("LAMP1")
+        #self.releaseComponent("LAMP1")
+        pass
+
      #­­Implementation of IDL methods­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­­
      #def sayHello(self):
      #    return "hello"
@@ -62,42 +65,80 @@ class ConsoleComponentImpl(CONSOLE_MODULE__POA.Console,
 
     def getMode(self):
         return self.mode         
-
-    def cameraOn(self):
-        # Turn the camera on 
-        pass       
-        return None
-
-    def cameraOff(self):
-        # Turn the camera off
-        pass       
-        return None
      
     def moveTelescope(self, position):
+        if self.mode == MODE_AUTOMATIC:
+            raise SYSTEMErr.SystemInAutoModeEx    
+        
         # Move the telescope to position.az, position.el
         # pos=TYPES.Position(45,55)
+        # SYSTEMErr::SystemInAutoModeEx, SYSTEMErr::PositionOutOfLimitsEx)
         self._logger.logInfo("Moving the telescope to EL {} AZ {}".format(position.el, position.az))
-        pass
-        return None
 
+        telescope = self.getComponent("TELESCOPE")
+        try:
+            telescope.moveTo(position)
+        except SYSTEMErr.PositionOutOfLimitsEx as e:
+            self._logger.logInfo("Requested position is out of limit: EL {} AZ {}".format(position.el, position.az))
+        
     def getTelescopePosition(self):
         #return self.Position.az, self.Position.el
-        return None
-                 
+        telescope = self.getComponent("TELESCOPE")        
+        position = telescope.getCurrentPosition()        
+        self._logger.logInfo("Current position is: EL {} AZ {}".format(position.el, position.az))
+        return position
+
+    def cameraOn(self):
+        if self.mode == MODE_AUTOMATIC:
+            raise SYSTEMErr.SystemInAutoModeEx    
+
+        # Turn the camera on 
+        self._logger.logInfo("Turning camera on")
+        instrument = self.getComponent("INSTRUMENT")        
+        instrument.cameraOn()
+
+    def cameraOff(self):
+        if self.mode == MODE_AUTOMATIC:
+            raise SYSTEMErr.SystemInAutoModeEx    
+
+        # Turn the camera off
+        self._logger.logInfo("Turning camera off")
+        instrument = self.getComponent("INSTRUMENT")        
+        instrument.cameraOff()
+
     def getCameraImage(self):
-        # Get image from somewhere
-        # image = getImageFrom...
-        image = None
+        if self.mode == MODE_AUTOMATIC:
+            raise SYSTEMErr.SystemInAutoModeEx    
+
+        # Get image from camera
+        self._logger.logInfo("Getting image from instrument")
+        instrument = self.getComponent("INSTRUMENT")        
+        
+        # Error when passing parameter 1 to takeImage?
+        image = instrument.takeImage(1)
         return image
+        
+        #img = [2,3,12,55,255]
+        #octseq = str(bytearray(image))
+        #return octseq 
 
     def setRGB(self, rgbConfig):
-        return None
+        # Set RGB configuration in camera
+        self._logger.logInfo("Setting RGB configuration in instrument:{}, {}, {}".format(rgbConfig.red, rgbConfig.green, rgbConfig.blue))
+        instrument = self.getComponent("INSTRUMENT")        
+        instrument.setRGB(rgbConfig)
 
     def setPixelBias(self, bias):
-        return None
+        # Set pixel bias configuration in camera
+        self._logger.logInfo("Setting pixel bias in instrument: {}".format(bias))
+        instrument = self.getComponent("INSTRUMENT")        
+        instrument.setPixelBias(bias)
      
     def setResetLevel(self, resetLevel):
-        return None
+        # Set reset level configuration in instrument
+        self._logger.logInfo("Setting reset level in instrument: {}".format(resetLevel))
+        instrument = self.getComponent("INSTRUMENT")        
+        instrument.setResetLevel(resetLevel)
 
     def sayHelloWithParameters(self, inString, inoutDouble):
         self.getLogger().logInfo("sayHello called with arguments inString="
