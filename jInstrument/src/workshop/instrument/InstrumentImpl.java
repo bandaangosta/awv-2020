@@ -89,7 +89,7 @@ public class InstrumentImpl extends ComponentImplBase implements InstrumentOpera
         }
 
         // fCamera.isoSpeed().get_sync(new CompletionHolder())
-        m_logger.debug("---->>>>>" + new String(fCamera.getFrame(String.valueOf(exposureTime), isoValue)));
+//        m_logger.fine("---->>>>>" + new String(fCamera.getFrame(String.valueOf(exposureTime), isoValue)));
         return fCamera.getFrame(String.valueOf(exposureTime), isoValue);
     }
 
