@@ -10,7 +10,20 @@
 
 //Skeleton interface for server implementation
 #include <ConsoleS.h>
+
+//Interface of clients for connection
+#include <InstrumentC.h>
+#include <TelescopeC.h>
+#include <SchedulerC.h>
+
+// Including Exceptions
+// all the exceptions that our methods need to raise, are already defined here => https://bitbucket.alma.cl/projects/ACSWS/repos/awv/browse/ICD/idl/SYSTEMErr.xml
+#include <SYSTEMErr.h> // Im not sure about the name of the header file
+
+
  
+ 
+
 //Error definitions for catching and raising exceptions
 class ConsoleImpl : public virtual acscomponent::ACSComponentImpl, public virtual POA_CONSOLE_MODULE::Console {
   public:
@@ -39,6 +52,9 @@ class ConsoleImpl : public virtual acscomponent::ACSComponentImpl, public virtua
 
     void setResetLevel (::CORBA::Long resetLevel);
 
+  private:
+  
+  CORBA::Boolean mode_;
 
 };
  

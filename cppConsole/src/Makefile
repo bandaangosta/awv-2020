@@ -95,7 +95,7 @@ LIBRARIES_L     =
 #
 # <brief description of lllll library>
 ConsoleImpl_OBJECTS = ConsoleImpl
-ConsoleImpl_LIBS = ConsoleStubs acscomponent SYSTEMErr TypesStubs
+ConsoleImpl_LIBS = ConsoleStubs acscomponent SYSTEMErr TypesStubs SchedulerStubs InstrumentStubs TelescopeStubs maci
 
 #
 # Scripts (public and local)
