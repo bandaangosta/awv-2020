@@ -78,7 +78,7 @@ void cppSchedulingImpl::processProposals() {
             //    const ::TYPES::Position & coordinates,
             //    ::CORBA::Long exposureTime);
             // raises(SYSTEMErr::PositionOutOfLimitsEx);
-            TYPES::ImageType * image_current;
+            TYPES::ImageType_var image_current;
             try {
                 image_current = this->telescope->observe(target.coordinates, target.expTime);
             } catch (SYSTEMErr::PositionOutOfLimitsEx &_ex) {
@@ -95,7 +95,7 @@ void cppSchedulingImpl::processProposals() {
             //    ::CORBA::Long tid,
             //    const ::TYPES::ImageType & image);
             try {
-                this->database->storeImage(proposalUnderExecutionID, target.tid, image_current);
+                this->database->storeImage(proposalUnderExecutionID, target.tid, image_current.in());
             } catch (SYSTEMErr::ImageAlreadyStoredEx &_ex) {
                 std::cout << "Exception ImageAlreadyStoredEx" << std::endl;
                 continue;

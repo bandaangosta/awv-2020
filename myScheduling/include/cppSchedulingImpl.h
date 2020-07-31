@@ -9,7 +9,7 @@
 #include <acscomponentImpl.h>
  
 //Skeleton interface for server implementation
-#include <cppSchedulingS.h>
+#include <SchedulerS.h>
  
 //Error definitions for catching and raising exceptions
 #include <DataBaseC.h>
@@ -21,7 +21,7 @@
 #include <exception>
 
 // Declare Scheduling class
-class cppSchedulingImpl : public virtual acscomponent::ACSComponentImpl, public virtual POA_workshop::Scheduler {
+class cppSchedulingImpl : public virtual acscomponent::ACSComponentImpl, public virtual POA_SCHEDULER_MODULE::Scheduler {
   private:
     CORBA::Long proposalUnderExecutionID;
     bool isRunning;
