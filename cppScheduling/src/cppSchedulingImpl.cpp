@@ -48,10 +48,14 @@ void cppSchedulingImpl::aboutToAbort() {
 void cppSchedulingImpl::processProposals() {
     // For each proposal
     std::cout << "processProposals starting..." << std::endl;
-    TYPES::ProposalList_var proposals = this->database->getProposals();
-    std::cout << "Obtained " << proposals->length() << " proposals to process." << std::endl;
-    for (unsigned int i=0; i < proposals->length(); i++) {
-        TYPES::Proposal proposal = (*proposals)[i];
+    while (this->processObservations) {
+        TYPES::ProposalList_var proposals = this->database->getProposals();
+        std::cout << "Obtained " << proposals->length() << " proposals to process." << std::endl;
+        if (proposals->length() == 0) {
+           usleep(100000);
+           continue;
+        }
+        TYPES::Proposal proposal = (*proposals)[0];
 
         // Set running, store proposal ID
         this->proposalUnderExecutionID = proposal.pid;
@@ -74,7 +78,7 @@ void cppSchedulingImpl::processProposals() {
             //    const ::TYPES::Position & coordinates,
             //    ::CORBA::Long exposureTime);
             // raises(SYSTEMErr::PositionOutOfLimitsEx);
-            TYPES::ImageType * image_current;
+            TYPES::ImageType_var image_current;
             try {
                 image_current = this->telescope->observe(target.coordinates, target.expTime);
             } catch (SYSTEMErr::PositionOutOfLimitsEx &_ex) {
@@ -91,7 +95,7 @@ void cppSchedulingImpl::processProposals() {
             //    ::CORBA::Long tid,
             //    const ::TYPES::ImageType & image);
             try {
-                this->database->storeImage(proposalUnderExecutionID, target.tid, image_current);
+                this->database->storeImage(proposalUnderExecutionID, target.tid, image_current.in());
             } catch (SYSTEMErr::ImageAlreadyStoredEx &_ex) {
                 std::cout << "Exception ImageAlreadyStoredEx" << std::endl;
                 continue;
@@ -109,7 +113,6 @@ void cppSchedulingImpl::processProposals() {
 
         // Check if in stopping state, Stop
         if (!this->processObservations){
-            this->isRunning = false;
             std::cout << "processProposals stopping..." << std::endl;
             break;
         }
@@ -130,7 +133,7 @@ void cppSchedulingImpl::start() {
     this->processObservations = true;
     std::cout << "Creating thread...." << std::endl;
     // Construct the new thread and runs it. Do not block execution.
-    this->thread_proposal = std::thread( [this] { processProposals(); } );
+    this->thread_proposal = std::thread( [this] { processProposals(); } ); // handle para guardar el thread
 }
 
 void cppSchedulingImpl::stop(){
@@ -149,7 +152,7 @@ void cppSchedulingImpl::stop(){
     // Wait until ongoing observation finishes before returning
     // Makes the main thread wait for the new thread to finish execution, therefore blocks its own execution.
     std::cout << "Waiting for processProposals to finish..." << std::endl;
-    this->thread_proposal.join();
+    this->thread_proposal.join(); // waits thread_proposal to finish
 
     // return ONLY when observations have finished
     std::cout << "Scheduler has been stopped." << std::endl;
