@@ -17,9 +17,9 @@
              dispatchPacketSize="0" 
              immediateDispatchLevel="99">
   </LoggingConfig>
-  <ErrorCode name="SchedulerAlreadyRunningEx"
+<!--  <ErrorCode name="SchedulerAlreadyRunningEx"
            shortDescription="Already in Running"
-           description="Scheduler is already running"/>
+           description="Scheduler is already running"/>-->
 </Container>
 
 
