@@ -33,4 +33,10 @@
         <ErrorCode name="CannotOpenDevice" 
                    shortDescription="Can't open device" 
                    description="Can't open THE device."/>
+        <ErrorCode name="ProposalDoesNotExist" 
+                   shortDescription="Proposal doesn't exist." 
+                   description="Proposal does not exist"/>
+        <ErrorCode name="TargetDoesNotExist" 
+                   shortDescription="Target doesn't exist." 
+                   description="Target does not exist"/>
 </Type>
