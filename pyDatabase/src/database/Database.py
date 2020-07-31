@@ -1,9 +1,6 @@
-#Client stubs and definitions, such as structs, enums, etc.
-import workshop
-#Skeleton infrastructure for server implementation
-import workshop__POA
 import TYPES
 import DATABASE_MODULE
+import DATABASE_MODULE__POA
 #Base component implementation
 from Acspy.Servants.ACSComponent import ACSComponent
 #Services provided by the container to the component
@@ -21,11 +18,10 @@ import SYSTEMErrImpl
 #import SYSTEMErrImpl
 #S.proposal(100, targetList, 2)
 
+STATUS_INITIAL_PROPOSAL = 0
+STATUS_NO_SUCH_PROPOSAL = -999
 
 class Database(DATABASE_MODULE__POA.DataBase, ACSComponent, ContainerServices, ComponentLifecycle):
-
-    STATUS_INITIAL_PROPOSAL = 0
-    STATUS_NO_SUCH_PROPOSAL = -999
 
     def __init__(self):
         ACSComponent.__init__(self)
@@ -34,8 +30,8 @@ class Database(DATABASE_MODULE__POA.DataBase, ACSComponent, ContainerServices, C
         self.proposalList = []
         self.imageList = []
 
-    def storeProposal(self.pid, targets):
-        proposal = TYPES.proposal(self.proposalId, targets, STATUS_INITIAL_PROPOSAL)
+    def storeProposal(self, targets):
+        proposal = TYPES.Proposal(self.proposalId, targets, STATUS_INITIAL_PROPOSAL)
         self.proposalList.append(proposal)
         self.imageList.append(dict())
         self.proposalId += 1
@@ -53,7 +49,7 @@ class Database(DATABASE_MODULE__POA.DataBase, ACSComponent, ContainerServices, C
 
     def getProposalObservations(self, pid):
         image_list = []
-        if self.proposalList[pid].status == 2
+        if self.proposalList[pid].status == 2:
             for target in self.proposalList[pid].TargetList:
                 tid = target.tid
                 if tid in self.imageList[pid].keys():
