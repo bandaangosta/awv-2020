@@ -17,7 +17,7 @@
                              Container="pySimContainer" ImplLang="py" />
 
       <e Name="SCHEDULER"   Code="cppSchedulingImpl"
-                             Type="IDL:ACSWS/SCHEDULER_MODULER_MODULE/Scheduler:1.0"
+                             Type="IDL:acsws/SCHEDULER_MODULE/Scheduler:1.0"
                              Container="bilboContainer" ImplLang="cpp" />
 </Components>
 
