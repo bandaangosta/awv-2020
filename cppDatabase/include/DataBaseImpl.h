@@ -38,7 +38,7 @@ class DataBaseImpl : public virtual acscomponent::ACSComponentImpl, public virtu
   } ProposalType;
 
    TYPES::ProposalList m_proposals;
-   std::map<CORBA::Long,TYPES::ImageType> m_images;
+   std::map<CORBA::Long,TYPES::ImageType*> m_images;
    CORBA::Long m_current_pid;
 };
  

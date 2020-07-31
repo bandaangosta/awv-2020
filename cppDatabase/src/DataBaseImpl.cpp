@@ -90,7 +90,7 @@ void DataBaseImpl::removeProposal(CORBA::Long pid)
 TYPES::ImageList * DataBaseImpl::getProposalObservations(CORBA::Long pid)
 {
     //TODO: implement
-    TYPES::ImageList ret_images;
+    TYPES::ImageList_var ret_images = new TYPES::ImageList;
     for (unsigned i = 0; i < m_proposals.length(); i++)
     {
         if (pid == m_proposals[i].pid)
@@ -101,10 +101,10 @@ TYPES::ImageList * DataBaseImpl::getProposalObservations(CORBA::Long pid)
                 TYPES::TargetList &tmp_targetlist = m_proposals[i].targets;
                 for (unsigned j = 0; j < tmp_targetlist.length(); j++)
                 {
-                    auto it = m_images.find(tmp_targetlist[j].tid);
+                    std::map<CORBA::Long,TYPES::ImageType*>::const_iterator it = m_images.find(tmp_targetlist[j].tid);
                     if (it != m_images.end())
                     {
-                        push_back(ret_images,*it);
+                        push_back(*ret_images,*(it->second));
                     }
                 }
             }
@@ -114,7 +114,7 @@ TYPES::ImageList * DataBaseImpl::getProposalObservations(CORBA::Long pid)
             }
         }
     }
-    return &ret_images;
+    return ret_images._retn();
 }
 
 
@@ -127,15 +127,15 @@ TYPES::ImageList * DataBaseImpl::getProposalObservations(CORBA::Long pid)
 TYPES::ProposalList * DataBaseImpl::getProposals()
 {
     //TODO: implement
-    TYPES::ProposalList ret_proposals;
+    TYPES::ProposalList_var ret_proposals = new TYPES::ProposalList;
     for (unsigned i = 0; i < m_proposals.length(); i++)
     {
         if (m_proposals[i].status == DATABASE_MODULE::DataBase::STATUS_INITIAL_PROPOSAL)
         {
-            push_back(ret_proposals,m_proposals[i]);
+            push_back(*ret_proposals,m_proposals[i]);
         }
     }
-    return &ret_proposals;
+    return ret_proposals._retn();
 }
 
 /**
@@ -197,7 +197,7 @@ void DataBaseImpl::storeImage(CORBA::Long pid, CORBA::Long tid, const TYPES::Ima
             {
                 if (tid == tmp_targetlist[j].tid)
                 {
-                    m_images[tid] = image;
+                    m_images[tid] = new TYPES::ImageType(image);
                     return;
                 }
             }
