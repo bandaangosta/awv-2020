@@ -55,7 +55,7 @@ class Database(DATABASE_MODULE__POA.DataBase, ACSComponent, ContainerServices, C
     def getProposalObservations(self, pid):
         image_list = []
         if self.proposalList[pid].status == 2:
-            for target in self.proposalList[pid].TargetList:
+            for target in self.proposalList[pid].targets:
                 tid = target.tid
                 if tid in self.imageList[pid].keys():
                     image_list.append(self.imageList[pid][tid])
@@ -87,7 +87,7 @@ class Database(DATABASE_MODULE__POA.DataBase, ACSComponent, ContainerServices, C
         return
 
     def storeImage(self, pid, tid, image):
-        octseq = str(bytearray(image))
+        octseq = bytes(bytearray(image))
         if pid < self.proposalId:
             if not tid in self.imageList[pid].keys():
                 self.imageList[pid][tid]=octseq
@@ -95,7 +95,7 @@ class Database(DATABASE_MODULE__POA.DataBase, ACSComponent, ContainerServices, C
                 raise SYSTEMErrImpl.ImageAlreadyInstalledEx()
         return
 
-    def clean():
+    def clean(self):
         self.proposalList = []
         self.imageList = []
         self.proposalId = 0
