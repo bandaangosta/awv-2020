@@ -36,3 +36,4 @@
 * API design:
   * For ALMA: https://confluence.alma.cl/display/ICTACS/ACS+Workshop+-+Project
   * For Workshop: ./ICD/idl/Scheduler.idl
+  * Implementation: https://confluence.alma.cl/display/ICTACS/ACS+Workshop+-+Project+Details
