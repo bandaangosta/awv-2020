@@ -1,8 +1,10 @@
 *.o
+*.a
+*.so
 *.jar
 *.pyc
 do_not_commit*
-lib
-object
 .vscode
-src/acsws/workshop/
+lib/
+object/
+acsws/workshop
