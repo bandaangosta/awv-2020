@@ -38,6 +38,8 @@ void cppSchedulingImpl::cleanUp() {
     this->getContainerServices()->releaseComponent(this->database->name());
 
     this->getContainerServices()->releaseComponent(this->telescope->name());
+
+    
 }
  
 void cppSchedulingImpl::aboutToAbort() {
@@ -50,13 +52,16 @@ void cppSchedulingImpl::processProposals() {
     std::cout << "processProposals starting..." << std::endl;
     while (this->processObservations) {
         TYPES::ProposalList_var proposals = this->database->getProposals();
-        ACS_SHORT_LOG((LM_INFO, "Obtained %d proposals to process.", proposals->length()));
 
         // Sleep if no work
         if (proposals->length() == 0) {
-           usleep(100000);
-           continue;
+            ACS_SHORT_LOG((LM_TRACE, "Waiting for proposals..."));
+            usleep(100000);
+            continue; // continue hace que se pase a la siguiente iteracion
         }
+
+        // Log proposal well received
+        ACS_SHORT_LOG((LM_INFO, "Obtained %d proposals to process.", proposals->length()));
         TYPES::Proposal proposal = (*proposals)[0];
 
         // Set running, store proposal ID
@@ -127,6 +132,7 @@ void cppSchedulingImpl::processProposals() {
         }
     }
     this->isRunning = false;
+    this->proposalUnderExecutionID = -1;
     // std::cout << "processProposals stopped." << std::endl;
     ACS_SHORT_LOG((LM_INFO, "processProposals stopped."));
 }
@@ -138,6 +144,7 @@ void cppSchedulingImpl::start() {
 
     // Clause: Do not start twice
     if (this->isRunning) {
+        ACS_SHORT_LOG((LM_ERROR, "SchedulerAlreadyRunningExImpl: Scheduler already running!"));
         throw SYSTEMErr::SchedulerAlreadyRunningExImpl(__FILE__, __LINE__, "Scheduler already running!").getSchedulerAlreadyRunningEx();
     }
     this->isRunning = true;
@@ -160,7 +167,8 @@ void cppSchedulingImpl::stop(){
     }
 
     // Tell loop to stop (please)
-    std::cout << "Attempting to stop processProposals..." << std::endl;
+    // std::cout << "Attempting to stop processProposals..." << std::endl;
+    ACS_SHORT_LOG((LM_INFO, "Attempting to stop processProposals..."));
     this->processObservations = false;
 
     // Wait until ongoing observation finishes before returning
@@ -168,10 +176,8 @@ void cppSchedulingImpl::stop(){
     ACS_SHORT_LOG((LM_INFO, "Waiting for processProposals to finish..."));
 
     this->thread_proposal.join(); // waits thread_proposal to finish
-
     // return ONLY when observations have finished
     ACS_SHORT_LOG((LM_INFO, "cppScheduler has been stopped."));
-
 }
 
 /**
