@@ -15,53 +15,46 @@ import acsws.SCHEDULER_MODULE.SchedulerOperations;
 import acsws.INSTRUMENT_MODULE.Instrument;
 import acsws.INSTRUMENT_MODULE.InstrumentHelper;
 
-public class SchedulerImpl implements ComponentLifecycle, SchedulerOperations {
+public class SchedulerImpl extends ComponentImplBase implements SchedulerOperations {
 
 	private Instrument camera = null;
-	private ContainerServices m_containerServices;
-	private Logger m_logger;
 
-	@Override
+	//@Override
 	public void initialize(ContainerServices containerServices) {
-		m_containerServices = containerServices;
-		m_logger = m_containerServices.getLogger();
 		m_logger.info("initialize() called...");
 	}
 
-	@Override
+	//@Override
 	public void execute() {
 		m_logger.info("execute() called...");
-	}
-
-	@Override
-	public void cleanUp() {
-		m_containerServices.releaseComponent("Instrument");
-		m_logger.info("cleanUp() called..., nothing to clean up.");
-	}
-
-	@Override
-	public void aboutToAbort() {
-		cleanUp();
-		m_logger.info("managed to abort...");
-	}
-
-	@Override
-	public ComponentStates componentState() {
-		return m_containerServices.getComponentStateManager().getCurrentState();
-	}
-
-	@Override
-	public String name() {
-		return "ciao"; // TO DO: fix this
-	}
-
-	public SchedulerImpl() {
-		super();
 		try {
 			camera = InstrumentHelper.narrow(this.m_containerServices.getComponent("Instrument"));
 		} catch (Exception e) {
 			m_logger.severe("Instrument component not found.");
 		}
+		
+	}
+
+	//@Override
+	public void cleanUp() {
+		m_containerServices.releaseComponent(camera.name());
+		m_logger.info("cleanUp() called..., nothing to clean up.");
+	}
+
+	//@Override
+	public void aboutToAbort() {
+		cleanUp();
+		m_logger.info("managed to abort...");
+	}
+
+	//@Override
+	public ComponentStates componentState() {
+		return m_containerServices.getComponentStateManager().getCurrentState();
+	}
+
+	public SchedulerImpl() {
+		super();
+		
 
 		System.out.println("SchedulerImpl constructor called");
 	}

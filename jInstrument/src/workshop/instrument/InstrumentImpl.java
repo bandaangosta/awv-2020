@@ -1,4 +1,3 @@
-//Suggested: import alma.<Module>.<Interface>Impl; //But anything, really
 package workshop.instrument;
 
 //Base component implementation, including container services and component lifecycle infrastructure
@@ -89,7 +88,6 @@ public class InstrumentImpl extends ComponentImplBase implements InstrumentOpera
         }
 
         // fCamera.isoSpeed().get_sync(new CompletionHolder())
-//        m_logger.fine("---->>>>>" + new String(fCamera.getFrame(String.valueOf(exposureTime), isoValue)));
         return fCamera.getFrame(String.valueOf(exposureTime), isoValue);
     }
 
