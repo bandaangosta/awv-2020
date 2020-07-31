@@ -21,6 +21,14 @@
       <e Name="DATABASE"   Code="DatabaseImpl.Database"
                              Type="IDL:acsws/DATABASE_MODULE/DataBase:1.0"
                              Container="pyContainer" ImplLang="py" />
+      
+      <e Name="CONSOLE"   Code="ws.ConsoleComponentImpl"
+                             Type="IDL:acsws/CONSOLE_MODULE/Console:1.0"
+                             Container="pyContainer" ImplLang="py" />
+      
+      <e Name="SCHEDULER"   Code="cppSchedulingImpl"
+                             Type="IDL:acsws/SCHEDULER_MODULE/Scheduler:1.0"
+                             Container="cppContainer" ImplLang="cpp" />
 <!--      
           <e Name="TELESCOPE"   Code="Acssim.Servants.Simulator"
                              Type="IDL:acsws/TELESCOPE_MODULE/Telescope:1.0"
