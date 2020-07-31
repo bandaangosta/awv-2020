@@ -49,7 +49,8 @@ void cppSchedulingImpl::aboutToAbort() {
 
 void cppSchedulingImpl::processProposals() {
     // For each proposal
-    std::cout << "processProposals starting..." << std::endl;
+    // std::cout << "processProposals starting..." << std::endl;
+    ACS_SHORT_LOG((LM_INFO, "processProposals starting..."));
     while (this->processObservations) {
         TYPES::ProposalList_var proposals = this->database->getProposals();
 
