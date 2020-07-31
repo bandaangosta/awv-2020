@@ -17,12 +17,16 @@
 #include <TelescopeC.h>
 #include <SYSTEMErr.h>
 
+// Boost: we must include (install) the lib but better compatibility with windows
+// ACS: it is the same now, with beter log
+// Std: the one we use, 
 #include <thread>
+#include <exception>
 
 // Declare Scheduling class
 class cppSchedulingImpl : public virtual acscomponent::ACSComponentImpl, public virtual POA_workshop::Scheduler {
   private:
-    long proposalUnderExecutionID;
+    CORBA::Long proposalUnderExecutionID;
     bool isRunning;
     bool processObservations;
     // std::thread

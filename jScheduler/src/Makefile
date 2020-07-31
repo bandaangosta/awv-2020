@@ -131,8 +131,8 @@ SchedulerStubs_LIBS = acscomponentStubs SYSTEMErrStubs
 #
 # Jarfiles and their directories
 #
-JARFILES=SchedulerImpl
-SchedulerImpl_DIRS=acsws 
+JARFILES= jScheduler
+jScheduler_DIRS= acsws/SCHEDULER_MODULE/SchedulerImpl
 jjj_EXTRAS= 
 #
 # java sources in Jarfile on/off

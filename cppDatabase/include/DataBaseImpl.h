@@ -29,9 +29,17 @@ class DataBaseImpl : public virtual acscomponent::ACSComponentImpl, public virtu
             const TYPES::ImageType &image);
     virtual void clean();
   private:
-   TYPES::ProposalList *m_proposals;
-   TYPES::ImageList *m_images;
-   CORBA::Long m_current_proposal_pid;
+
+  typedef enum {
+    QUEUED = 0,
+    RUNNING = 1,
+    READY = 2,
+    REMOVED = 999
+  } ProposalType;
+
+   TYPES::ProposalList m_proposals;
+   std::map<CORBA::Long,TYPES::ImageType*> m_images;
+   CORBA::Long m_current_pid;
 };
  
 #endif

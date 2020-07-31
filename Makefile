@@ -70,7 +70,7 @@ MODULES:= ICD EXTERNAL/Serial EXTERNAL/Canon EXTERNAL/Nexstar EXTERNAL/Camera \
 	  cppInstrument jInstrument \
 	  cppScheduling jScheduler pyScheduling \
           cppDatabase pyDatabase \
-          cppConsole
+          cppConsole pyConsole
 	  
 KEEP_GOING:="on"
 

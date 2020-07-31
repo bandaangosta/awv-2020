@@ -1,9 +1,6 @@
-#Client stubs and definitions, such as structs, enums, etc.
-import workshop
-#Skeleton infrastructure for server implementation
-import workshop__POA
 import TYPES
 import DATABASE_MODULE
+import DATABASE_MODULE__POA
 #Base component implementation
 from Acspy.Servants.ACSComponent import ACSComponent
 #Services provided by the container to the component
@@ -21,11 +18,10 @@ import SYSTEMErrImpl
 #import SYSTEMErrImpl
 #S.proposal(100, targetList, 2)
 
+STATUS_INITIAL_PROPOSAL = 0
+STATUS_NO_SUCH_PROPOSAL = -999
 
 class Database(DATABASE_MODULE__POA.DataBase, ACSComponent, ContainerServices, ComponentLifecycle):
-
-    STATUS_INITIAL_PROPOSAL = 0
-    STATUS_NO_SUCH_PROPOSAL = -999
 
     def __init__(self):
         ACSComponent.__init__(self)
@@ -34,12 +30,12 @@ class Database(DATABASE_MODULE__POA.DataBase, ACSComponent, ContainerServices, C
         self.proposalList = []
         self.imageList = []
 
-    def storeProposal(self.pid, targets):
-        proposal = TYPES.proposal(self.proposalId, targets, STATUS_INITIAL_PROPOSAL)
+    def storeProposal(self, targets):
+        proposal = TYPES.Proposal(self.proposalId, targets, STATUS_INITIAL_PROPOSAL)
         self.proposalList.append(proposal)
         self.imageList.append(dict())
         self.proposalId += 1
-        return self.proposalId
+        return self.proposalId - 1
 
     def getProposalStatus(self, pid):
         if pid < self.proposalId:
@@ -53,13 +49,13 @@ class Database(DATABASE_MODULE__POA.DataBase, ACSComponent, ContainerServices, C
 
     def getProposalObservations(self, pid):
         image_list = []
-        if self.proposalList[pid].status == 2
+        if self.proposalList[pid].status == 2:
             for target in self.proposalList[pid].TargetList:
                 tid = target.tid
                 if tid in self.imageList[pid].keys():
                     image_list.append(self.imageList[pid][tid])
                 else:
-                    image_list.append([])
+                    image_list.append(str(bytearray([])))
             return image_list
         else:
             raise SYSTEMErrImpl.ProposalNotYetReadyExImpl()
@@ -86,13 +82,21 @@ class Database(DATABASE_MODULE__POA.DataBase, ACSComponent, ContainerServices, C
         return
 
     def storeImage(self, pid, tid, image):
-        octseq = str(bytearray(image))
+        #octseq = str(bytearray(image))
         if pid < self.proposalId:
-            if not tid in self.imageList[pid].keys():
-                self.imageList[pid][tid]=octseq
+            tid_exists = False
+            for target in self.proposalList[pid].targets:
+                if target.tid == tid:
+                    tid_exists = True
+            if tid_exists:
+                if not tid in self.imageList[pid].keys():
+                    self.imageList[pid][tid]=image
+                else:
+                    raise SYSTEMErrImpl.ImageAlreadyStoredExImpl()
             else:
-                raise SYSTEMErrImpl.ImageAlreadyInstalledEx()
-        return
+                raise SYSTEMErrImpl.TargetDoesNotExistExImpl()
+        else:
+            raise SYSTEMErrImpl.ProposalDoesNotExistExImpl() 
 
     def clean():
         self.proposalList = []

@@ -1,18 +1,23 @@
 #include <DataBaseImpl.h>
+#include <SYSTEMErr.h>
  
+template<class Seq, class T>
+void push_back(Seq& seq, const T& item)
+{
+   const CORBA::ULong len = seq.length();
+   seq.length(len + 1);
+   seq[len] = item;
+}
+
 DataBaseImpl::DataBaseImpl(const ACE_CString& name, maci::ContainerServices * containerServices) 
 : ACSComponentImpl(name, containerServices) 
-, m_current_proposal_pid(0) 
-, m_proposals(new TYPES::ProposalList(999))
-, m_targets(new TYPES::TargetList())
+, m_current_pid(0) 
 {
 
 }
  
 DataBaseImpl::~DataBaseImpl() 
 {
-    delete m_proposals;
-    delete m_targets;
 }
  
 /**
@@ -26,12 +31,12 @@ CORBA::Long DataBaseImpl::storeProposal(const TYPES::TargetList &targets)
     //TODO: implement - maybe add check for empty targets
     //TODO: this will overflow at some point
     TYPES::Proposal tmp_proposal;
-    tmp_proposal.pid = m_current_proposal_pid;
+    tmp_proposal.pid = m_current_pid;
     tmp_proposal.targets = targets;
-    tmp_proposal.status = DataBase::STATUS_INITIAL_PROPOSAL; 
-    (*m_proposals)[m_current_proposal_pid] = tmp_proposal;
-    CORBA::Long tmp_ret = m_current_proposal_pid;
-    m_current_proposal_pid++;
+    tmp_proposal.status = DATABASE_MODULE::DataBase::STATUS_INITIAL_PROPOSAL; 
+    push_back(m_proposals,tmp_proposal);
+    CORBA::Long tmp_ret = m_current_pid;
+    m_current_pid++;
     return tmp_ret;
 }
 
@@ -44,14 +49,14 @@ CORBA::Long DataBaseImpl::storeProposal(const TYPES::TargetList &targets)
  */
 CORBA::Long DataBaseImpl::getProposalStatus(CORBA::Long pid)
 {
-    if (pid<m_proposals.length())
+    for (unsigned i = 0; i < m_proposals.length(); i++)
     {
-        return (*m_proposals)[pid].status;
+        if (pid == m_proposals[i].pid)
+        {
+            return m_proposals[pid].status;
+        }
     }
-    else
-    {
-        return DataBase::STATUS_NO_SUCH_PROPOSAL;
-    }
+    return DATABASE_MODULE::DataBase::STATUS_NO_SUCH_PROPOSAL;
 }
 
 /** 
@@ -62,11 +67,15 @@ CORBA::Long DataBaseImpl::getProposalStatus(CORBA::Long pid)
 void DataBaseImpl::removeProposal(CORBA::Long pid)
 {
     //TODO: implement
-    //Victor on it
-    /*
-    */
-
-
+    //iterate over TYPES::ProposalList m_proposals;
+    for (unsigned i = 0; i < m_proposals.length(); i++)
+    {
+        if (pid == m_proposals[i].pid)
+        {
+            m_proposals[i].status = REMOVED;
+        }
+    }
+    //log end of function
 
 }
 
@@ -81,9 +90,31 @@ void DataBaseImpl::removeProposal(CORBA::Long pid)
 TYPES::ImageList * DataBaseImpl::getProposalObservations(CORBA::Long pid)
 {
     //TODO: implement
-    
-    //raises(SYSTEMErr::ProposalNotYetReadyEx);
-    return m_images;
+    TYPES::ImageList_var ret_images = new TYPES::ImageList;
+    for (unsigned i = 0; i < m_proposals.length(); i++)
+    {
+        if (pid == m_proposals[i].pid)
+        {
+            if (m_proposals[i].status == READY)
+            {
+                // fetch the image list
+                TYPES::TargetList &tmp_targetlist = m_proposals[i].targets;
+                for (unsigned j = 0; j < tmp_targetlist.length(); j++)
+                {
+                    std::map<CORBA::Long,TYPES::ImageType*>::const_iterator it = m_images.find(tmp_targetlist[j].tid);
+                    if (it != m_images.end())
+                    {
+                        push_back(*ret_images,*(it->second));
+                    }
+                }
+            }
+            else
+            {
+                throw SYSTEMErr::ProposalNotYetReadyExImpl(__FILE__, __LINE__, "This proposal is not ready").getProposalNotYetReadyEx();
+            }
+        }
+    }
+    return ret_images._retn();
 }
 
 
@@ -96,7 +127,15 @@ TYPES::ImageList * DataBaseImpl::getProposalObservations(CORBA::Long pid)
 TYPES::ProposalList * DataBaseImpl::getProposals()
 {
     //TODO: implement
-    return m_proposals;
+    TYPES::ProposalList_var ret_proposals = new TYPES::ProposalList;
+    for (unsigned i = 0; i < m_proposals.length(); i++)
+    {
+        if (m_proposals[i].status == DATABASE_MODULE::DataBase::STATUS_INITIAL_PROPOSAL)
+        {
+            push_back(*ret_proposals,m_proposals[i]);
+        }
+    }
+    return ret_proposals._retn();
 }
 
 /**
@@ -109,8 +148,27 @@ TYPES::ProposalList * DataBaseImpl::getProposals()
 */
 void DataBaseImpl::setProposalStatus(CORBA::Long pid, CORBA::Long status)
 {
-    //TODO: impl
-    //raises(SYSTEMErr::InvalidProposalStatusTransitionEx);
+    for (unsigned i = 0; i < m_proposals.length(); i++)
+    {
+        if (pid == m_proposals[i].pid)
+        {
+            if ((status >= 0) && (status <= RUNNING))
+            {
+                if (status - m_proposals[i].status == 1)
+                {
+                    m_proposals[i].status = status;
+                }
+                else
+                {
+                    throw SYSTEMErr::InvalidProposalStatusTransitionExImpl(__FILE__, __LINE__, "This proposal transition is not valid").getInvalidProposalStatusTransitionEx();
+                }
+            }
+            else
+            {
+                throw SYSTEMErr::InvalidProposalStatusTransitionExImpl(__FILE__, __LINE__, "This proposal transition is not valid").getInvalidProposalStatusTransitionEx();
+            }
+        }
+    }
 }
 
 /**
@@ -125,6 +183,29 @@ void DataBaseImpl::setProposalStatus(CORBA::Long pid, CORBA::Long status)
 void DataBaseImpl::storeImage(CORBA::Long pid, CORBA::Long tid, const TYPES::ImageType &image)
 {
     // TODO: implement
+    auto it = m_images.find(tid);
+    if (it != m_images.end())
+    {
+        throw SYSTEMErr::ImageAlreadyStoredExImpl(__FILE__, __LINE__, "This image has been already stored").getImageAlreadyStoredEx();
+    }
+    for (unsigned i = 0; i < m_proposals.length(); i++)
+    {
+        if (pid == m_proposals[i].pid)
+        {
+            TYPES::TargetList &tmp_targetlist = m_proposals[pid].targets;
+            for (unsigned j = 0; j < tmp_targetlist.length(); j++)
+            {
+                if (tid == tmp_targetlist[j].tid)
+                {
+                    m_images[tid] = new TYPES::ImageType(image);
+                    return;
+                }
+            }
+            throw SYSTEMErr::TargetDoesNotExistExImpl(__FILE__, __LINE__, "This target does not exist").getTargetDoesNotExistEx();
+        }
+    }
+    throw SYSTEMErr::ProposalDoesNotExistExImpl(__FILE__, __LINE__, "This proposal does not exist").getProposalDoesNotExistEx();
+    
     //raises(SYSTEMErr::ImageAlreadyStoredEx); // TODO raise also new exception "ProposalDoesNotExist"
 }
 /**
@@ -132,11 +213,11 @@ void DataBaseImpl::storeImage(CORBA::Long pid, CORBA::Long tid, const TYPES::Ima
 */
 void DataBaseImpl::clean()
 {
-    //TODO: implement
-
+    m_proposals.length(0);
 }
  
 /* --------------- [ MACI DLL support functions ] -----------------*/
 #include <maciACSComponentDefines.h>
 MACI_DLL_SUPPORT_FUNCTIONS(DataBaseImpl)
 /* ----------------------------------------------------------------*/
+

@@ -108,7 +108,7 @@ module DATABASE_MODULE
 		void storeImage(in long pid, 
 				in long tid,
 				in TYPES::ImageType image)
-			raises(SYSTEMErr::ImageAlreadyStoredEx); // TODO raise also new exception "ProposalDoesNotExist"
+			raises(SYSTEMErr::ImageAlreadyStoredEx, SYSTEMErr::ProposalDoesNotExistEx, SYSTEMErr::TargetDoesNotExistEx); // TODO raise also new exception "ProposalDoesNotExist"
 		/**
 		 * Clean all the proposals
 		 */
