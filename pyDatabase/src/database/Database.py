@@ -35,7 +35,7 @@ class Database(DATABASE_MODULE__POA.DataBase, ACSComponent, ContainerServices, C
         self.proposalList.append(proposal)
         self.imageList.append(dict())
         self.proposalId += 1
-        return self.proposalId
+        return self.proposalId - 1
 
     def getProposalStatus(self, pid):
         if pid < self.proposalId:
@@ -55,7 +55,7 @@ class Database(DATABASE_MODULE__POA.DataBase, ACSComponent, ContainerServices, C
                 if tid in self.imageList[pid].keys():
                     image_list.append(self.imageList[pid][tid])
                 else:
-                    image_list.append([])
+                    image_list.append(str(bytearray([])))
             return image_list
         else:
             raise SYSTEMErrImpl.ProposalNotYetReadyExImpl()
@@ -82,13 +82,21 @@ class Database(DATABASE_MODULE__POA.DataBase, ACSComponent, ContainerServices, C
         return
 
     def storeImage(self, pid, tid, image):
-        octseq = str(bytearray(image))
+        #octseq = str(bytearray(image))
         if pid < self.proposalId:
-            if not tid in self.imageList[pid].keys():
-                self.imageList[pid][tid]=octseq
+            tid_exists = False
+            for target in self.proposalList[pid].targets:
+                if target.tid == tid:
+                    tid_exists = True
+            if tid_exists:
+                if not tid in self.imageList[pid].keys():
+                    self.imageList[pid][tid]=image
+                else:
+                    raise SYSTEMErrImpl.ImageAlreadyStoredExImpl()
             else:
-                raise SYSTEMErrImpl.ImageAlreadyInstalledEx()
-        return
+                raise SYSTEMErrImpl.TargetDoesNotExistExImpl()
+        else:
+            raise SYSTEMErrImpl.ProposalDoesNotExistExImpl() 
 
     def clean():
         self.proposalList = []

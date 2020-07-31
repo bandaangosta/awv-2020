@@ -17,6 +17,9 @@
 #include <TelescopeC.h>
 #include <SYSTEMErr.h>
 
+// Boost: we must include (install) the lib but better compatibility with windows
+// ACS: it is the same now, with beter log
+// Std: the one we use, 
 #include <thread>
 #include <exception>
 
