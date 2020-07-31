@@ -1,22 +1,11 @@
 import TYPES
 import DATABASE_MODULE
 import DATABASE_MODULE__POA
-#Base component implementation
 from Acspy.Servants.ACSComponent import ACSComponent
-#Services provided by the container to the component
 from Acspy.Servants.ContainerServices import ContainerServices
-#Basic component lifecycle (initialize, execute, cleanUp and aboutToAbort methods)
 from Acspy.Servants.ComponentLifecycle import ComponentLifecycle
 import SYSTEMErr
 import SYSTEMErrImpl
-#p = TYPES.Position(34,23)#to create a postion
-#t = TYPES.Target(23,p,366) #to create a target
-#t1 = TYPES.Target(24,p,366) #to create a target
-#t2 = TYPES.Target(25,p,366) #to create a target
-#targetList =[t,t1,t2]
-#proposal = TYPEimport SYSTEMErr
-#import SYSTEMErrImpl
-#S.proposal(100, targetList, 2)
 
 STATUS_INITIAL_PROPOSAL = 0
 STATUS_NO_SUCH_PROPOSAL = -999
@@ -82,12 +71,13 @@ class Database(DATABASE_MODULE__POA.DataBase, ACSComponent, ContainerServices, C
         return
 
     def storeImage(self, pid, tid, image):
-        #octseq = str(bytearray(image))
         if pid < self.proposalId:
-            tid_exists = False
-            for target in self.proposalList[pid].targets:
-                if target.tid == tid:
-                    tid_exists = True
+            tids = [target.tid for target in self.proposalList[pid]]
+            tid_exists = (tid in tids) 
+            #tid_exists = False
+            #for target in self.proposalList[pid].targets:
+            #    if target.tid == tid:
+            #        tid_exists = True
             if tid_exists:
                 if not tid in self.imageList[pid].keys():
                     self.imageList[pid][tid]=image
