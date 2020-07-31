@@ -44,9 +44,9 @@ class Telescope(TELESCOPE_MODULE__POA.Telescope, ACSComponent,
         self._logger.logWarning("Telescope is about to Abort!")
         
     def moveTo(self, coordinates):
+        if coordinates.el not in [0, 90] or coordinates.az not in [0, 360]:
+            raise SYSTEMErrImpl.PositionOutOfLimitsExImpl()
         self._logger.logInfo("Received target coordinates: " + str(coordinates.el)+' , '+str(coordinates.az))
-        #if coordinates.el not in [0, 90] or coordinates.az not in [0, 360]:
-        #    raise SYSTEMErrImpl.PositionOutOfLimitsExImpl()
         self._logger.logInfo("Moving telescope...")
         self._telescope_control.objfix(coordinates.el, coordinates.az)
         while not self._hasTelescopeReachedPosition(coordinates, self.getCurrentPosition()):
@@ -73,5 +73,5 @@ class Telescope(TELESCOPE_MODULE__POA.Telescope, ACSComponent,
         if np.isclose((targetCoordinates.az, targetCoordinates.el),
                         (actualCoordinates.az, actualCoordinates.el), rtol=0.5, atol=1).all():
             return True
-        self._logger.logWarning("Telescope did not reach the target Position!")
+        self._logger.logInfo("Telescope did not reach the target Position!")
         return False
