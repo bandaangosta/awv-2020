@@ -50,7 +50,9 @@ void cppSchedulingImpl::processProposals() {
     std::cout << "processProposals starting..." << std::endl;
     while (this->processObservations) {
         TYPES::ProposalList_var proposals = this->database->getProposals();
-        std::cout << "Obtained " << proposals->length() << " proposals to process." << std::endl;
+        ACS_SHORT_LOG((LM_INFO, "Obtained %d proposals to process.", proposals->length()));
+
+        // Sleep if no work
         if (proposals->length() == 0) {
            usleep(100000);
            continue;
@@ -59,20 +61,23 @@ void cppSchedulingImpl::processProposals() {
 
         // Set running, store proposal ID
         this->proposalUnderExecutionID = proposal.pid;
-        std::cout << "Setting proposal PID " << this->proposalUnderExecutionID << " as RUNNING." << std::endl;
+        // std::cout << "Setting proposal PID " << this->proposalUnderExecutionID << " as RUNNING." << std::endl;
+        ACS_SHORT_LOG((LM_INFO, "Setting proposal PID %d as RUNNING.", this->proposalUnderExecutionID));
         // Set Database ProposalStatus -> running (1)
         this->database->setProposalStatus(this->proposalUnderExecutionID, 1);
-        std::cout << "Starting camera..." << std::endl;
+        // std::cout << "Starting camera..." << std::endl;
+        ACS_SHORT_LOG((LM_INFO, "Starting camera..."));
         // Start Camera
         this->instrument->cameraOn();
 
         // For each target in the current proposal
         TYPES::TargetList_var targets = proposal.targets;
-        std::cout << "Proposal PID " << this->proposalUnderExecutionID << " has " << targets->length() << " targets." << std::endl;
+        // std::cout << "Proposal PID " << this->proposalUnderExecutionID << " has " << targets->length() << " targets." << std::endl;
+        ACS_SHORT_LOG((LM_INFO, "Proposal PID %d has %d targets.", this->proposalUnderExecutionID, targets->length()));
         for (unsigned int j = 0; j < targets->length(); j++) {
             TYPES::Target target = proposal.targets[j];
-            ACS_SHORT_LOG((LM_INFO, "Observing target '%d'...", target.tid));
-            std::cout << "Observing target " << target.tid << ", with position (" << target.coordinates.az << "," << target.coordinates.el << ") and exp time " << target.expTime << std::endl;
+            ACS_SHORT_LOG((LM_INFO, "Observing target '%d', with position (%d,%d and exp time %d", target.tid, target.coordinates.az, target.coordinates.el, target.expTime));
+            // std::cout << "Observing target " << target.tid << ", with position (" << target.coordinates.az << "," << target.coordinates.el << ") and exp time " << target.expTime << std::endl;
 
             //virtual ::TYPES::ImageType * observe (
             //    const ::TYPES::Position & coordinates,
@@ -82,10 +87,10 @@ void cppSchedulingImpl::processProposals() {
             try {
                 image_current = this->telescope->observe(target.coordinates, target.expTime);
             } catch (SYSTEMErr::PositionOutOfLimitsEx &_ex) {
-                std::cout << "Exception PositionOutOfLimitsEx" << std::endl;
+                ACS_SHORT_LOG((LM_ERROR, "Exception PositionOutOfLimitsEx!"));
                 continue;
             } catch (...) {
-                std::cout << "Unknown Exception!" << std::endl;
+                ACS_SHORT_LOG((LM_ERROR, "Unknown Exception at Telescope.observe!"));
                 continue;
             }
             
@@ -97,7 +102,7 @@ void cppSchedulingImpl::processProposals() {
             try {
                 this->database->storeImage(proposalUnderExecutionID, target.tid, image_current.in());
             } catch (SYSTEMErr::ImageAlreadyStoredEx &_ex) {
-                std::cout << "Exception ImageAlreadyStoredEx" << std::endl;
+                ACS_SHORT_LOG((LM_ERROR, "Exception ImageAlreadyStoredEx!"));
                 continue;
             }
             
@@ -151,11 +156,13 @@ void cppSchedulingImpl::stop(){
 
     // Wait until ongoing observation finishes before returning
     // Makes the main thread wait for the new thread to finish execution, therefore blocks its own execution.
-    std::cout << "Waiting for processProposals to finish..." << std::endl;
+    ACS_SHORT_LOG((LM_INFO, "Waiting for processProposals to finish...", ""));
+
     this->thread_proposal.join(); // waits thread_proposal to finish
 
     // return ONLY when observations have finished
-    std::cout << "Scheduler has been stopped." << std::endl;
+    ACS_SHORT_LOG((LM_INFO, "cppScheduler has been stopped.", ""));
+
 }
 
 /**
