@@ -3,9 +3,6 @@
        xmlns:cdb="urn:schemas-cosylab-com:CDB:1.0" 
        xmlns:baci="urn:schemas-cosylab-com:BACI:1.0" 
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <e Name="TELESCOPE_CONTROL"   Code="Acssim.Servants.Simulator"
-                             Type="IDL:acsws/TELESCOPE_MODULE/TelescopeControl:1.0"
-                             Container="pySimContainer" ImplLang="py" />
 
       <e Name="TELESCOPE"   Code="Acssim.Servants.Simulator"
                              Type="IDL:acsws/TELESCOPE_MODULE/Telescope:1.0"
@@ -19,16 +16,8 @@
                              Type="IDL:acsws/INSTRUMENT_MODULE/Instrument:1.0"
                              Container="pySimContainer" ImplLang="py" />
 
-      <e Name="CAMERA"   Code="Acssim.Servants.Simulator"
-                             Type="IDL:acsws/CAMERA_MODULE/Camera:1.0"
-                             Container="pySimContainer" ImplLang="py" />
-
-      <e Name="CONSOLE"   Code="Acssim.Servants.Simulator"
-                             Type="IDL:acsws/CONSOLE_MODULE/Console:1.0"
-                             Container="pySimContainer" ImplLang="py" />
-
-      <e Name="CPP_SCHEDULER"   Code="cppSchedulingImpl"
-                             Type="IDL:acsws/workshop/cppScheduling:1.0"
+      <e Name="SCHEDULER"   Code="cppSchedulingImpl"
+                             Type="IDL:ACSWS/SCHEDULER_MODULE/Scheduler:1.0"
                              Container="bilboContainer" ImplLang="cpp" />
 </Components>
 

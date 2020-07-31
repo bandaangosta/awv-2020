@@ -46,6 +46,8 @@ module SYSTEMErr
 	 const ACSErr::ErrorCode NoProposalExecuting = 8;
 	 const ACSErr::ErrorCode SystemInAutoMode = 9;
 	 const ACSErr::ErrorCode CannotOpenDevice = 10;
+	 const ACSErr::ErrorCode ProposalDoesNotExist = 11;
+	 const ACSErr::ErrorCode TargetDoesNotExist = 12;
 	
 	// excption for type:
 	exception SYSTEMErrEx {
@@ -94,6 +96,14 @@ module SYSTEMErr
 	};
 	
 	exception CannotOpenDeviceEx {
+		ACSErr::ErrorTrace errorTrace;	
+	};
+	
+	exception ProposalDoesNotExistEx {
+		ACSErr::ErrorTrace errorTrace;	
+	};
+	
+	exception TargetDoesNotExistEx {
 		ACSErr::ErrorTrace errorTrace;	
 	};
 	
