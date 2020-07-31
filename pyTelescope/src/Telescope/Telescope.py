@@ -71,7 +71,7 @@ class Telescope(TELESCOPE_MODULE__POA.Telescope, ACSComponent,
         
     def _hasTelescopeReachedPosition(self, targetCoordinates, actualCoordinates):
         if np.isclose((targetCoordinates.az, targetCoordinates.el),
-                        (actualCoordinates.az, actualCoordinates.el)).all():
+                        (actualCoordinates.az, actualCoordinates.el), rtol=0.5, atol=1).all():
             return True
         self._logger.logInfo("Telescope did not reach the target Position!")
         return False
