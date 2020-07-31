@@ -7,9 +7,9 @@
                              Type="IDL:acsws/TELESCOPE_MODULE/TelescopeControl:1.0"
                              Container="pySimContainer" ImplLang="py" />
 
-      <e Name="TELESCOPE"   Code="Acssim.Servants.Simulator"
+      <e Name="TELESCOPE"   Code="TelescopeImpl"
                              Type="IDL:acsws/TELESCOPE_MODULE/Telescope:1.0"
-                             Container="pySimContainer" ImplLang="py" />
+                             Container="bilboContainer" ImplLang="cpp" />
 
       <e Name="DATABASE"   Code="Acssim.Servants.Simulator"
                              Type="IDL:acsws/DATABASE_MODULE/DataBase:1.0"

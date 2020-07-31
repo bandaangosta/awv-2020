@@ -19,8 +19,8 @@ TelescopeImpl::~TelescopeImpl() {
 TYPES::ImageType * 
 TelescopeImpl::observe (const ::TYPES::Position & coordinates,::CORBA::Long exposureTime) 
 {
-  TYPES::ImageType * image = new TYPES::ImageType;
-  image->length(100);
+  TYPES::ImageType_var image = new TYPES::ImageType;
+  image->length(1);
 
   if ((coordinates.el >= 0) && (coordinates.el < 90)) {
     moveTo (coordinates);
@@ -40,13 +40,13 @@ TelescopeImpl::observe (const ::TYPES::Position & coordinates,::CORBA::Long expo
     
   }
 
-  return image;
+  return image._retn();
 }
 
 void TelescopeImpl::moveTo (const ::TYPES::Position & coordinates)
 {
   ACS_SHORT_LOG((LM_INFO,"Telescope::moveTo")); 
-  telescope_pointer->objfix(Pos.el,Pos.az);
+  telescope_pointer->objfix(coordinates.el,coordinates.az);
   return;
 }
 
